@@ -1,0 +1,540 @@
+{
+  "name": "Graph Database Resources:JAVA+MD",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -2460,
+        440
+      ],
+      "id": "1dca4b41-abb3-48d3-aaea-05bcdc2e5b40",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "fileSelector": "/data/shared/resource/**/*",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -2240,
+        440
+      ],
+      "id": "f1d8a114-a8df-4e3c-bf05-115f32286e25",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "operation": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -2020,
+        440
+      ],
+      "id": "a6d60687-edb2-4dda-a1ee-00ca35ca4f8b",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -700,
+        440
+      ],
+      "id": "d233a07c-6d85-4ef1-b50b-d695cab48053",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "command": "find  /data/shared/resource/*"
+      },
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        -1580,
+        440
+      ],
+      "id": "281bf9a2-03a6-48fc-b859-7d949ebac7c8",
+      "name": "Execute Command"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "2e7f1c73-c82c-4343-a1a0-c0237d45eb6c",
+              "name": "file_name",
+              "value": "={{ $('Read/Write Files from Disk').item.json.fileName }}",
+              "type": "string"
+            },
+            {
+              "id": "c19c1443-6566-4046-9b3d-6e785eb6b66c",
+              "name": "content",
+              "value": "={{ $json.data }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1800,
+        440
+      ],
+      "id": "47249efe-7502-4adf-9765-c404adf0eac7",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first();\nconst stdout = item.json.stdout || \"\";\n\n// Étape 1: Extraire les lignes qui se terminent par .java ou .md\nconst lines = stdout\n  .split('\\n')\n  .map(line => line.trim())\n  .filter(line => line.endsWith('.java') || line.endsWith('.markdown') || line.endsWith('.md'));\n\n// Étape 2: Récupérer les items du node \"Edit Fields1\" de façon sécurisée\nlet editItems = [];\n\ntry {\n  const nodeItems = $('Edit Fields1').all();\n  for (const e of nodeItems) {\n    if (e && e.json) {\n      editItems.push(e.json);\n    }\n  }\n} catch (err) {\n  // En cas d'erreur, editItems restera vide\n  editItems = [];\n}\n\n// Étape 3: Construire les résultats\nconst results = [];\n\nfor (const line of lines) {\n  const fullPath = line;\n\n  // Chemin relatif\n  const relativePath = fullPath.replace('/data/shared/resource/', '');\n\n  const parts = relativePath.split('/');\n  const fileName = parts.pop(); // le nom du fichier\n  const section = parts.join('/'); // dossier parent\n\n  // Chercher dans editItems celui qui correspond au fichier\n  const match = editItems.find(e => e.file_name === fileName);\n\n  results.push({\n    json: {\n      path: fullPath,\n      section: section,\n      file: fileName,\n      content: match ? match.content : null,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        460
+      ],
+      "id": "fd12d4a6-af22-41f4-bc07-bd4a2cdd03ba",
+      "name": "Extract All informations"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9c741488-67fd-4a13-8712-71e0c4eafb42",
+              "name": "file_name",
+              "value": "={{ $json.file }}",
+              "type": "string"
+            },
+            {
+              "id": "89f97c53-0a29-4f36-b33e-196d19dddfdc",
+              "name": "section",
+              "value": "={{ $json.section }}",
+              "type": "string"
+            },
+            {
+              "id": "59bed106-ad38-4ee1-b65e-01c2be5a7101",
+              "name": "PATH",
+              "value": "={{ $json.path }}",
+              "type": "string"
+            },
+            {
+              "id": "a5cbf09b-b7bd-4a6b-b9de-80a9e5103100",
+              "name": "content",
+              "value": "={{ $json.cleanedCode }}",
+              "type": "string"
+            },
+            {
+              "id": "aa8b2315-8a6d-4494-86a1-bf274185f400",
+              "name": "extractedAT",
+              "value": "={{ $json.extractedAt }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -920,
+        440
+      ],
+      "id": "61fcc270-22dd-4534-8dfa-8b7ee69f7103",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -260,
+        300
+      ],
+      "id": "3bc8a213-7341-4517-a9e7-db2c1a580067",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "resource": "graphDb",
+        "cypherQuery": "=MERGE (d:JavaTestgraph1 {Source: \"{{ $json.file_name }}\"}) ON CREATE SET   d.content = \"{{ $json.content }}\", d.extractedAt = \"{{ $json.extractedAT }}\",d.section=\"{{ $json.section }}\",d.path=\"{{ $json.PATH }}\" RETURN d"
+      },
+      "type": "n8n-nodes-neo4j.neo4j",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        500
+      ],
+      "id": "42685908-01f7-4f34-8edd-a19525f80742",
+      "name": "Create Database",
+      "credentials": {
+        "neo4jApi": {
+          "id": "XwdiNEDV42io6tPG",
+          "name": "Neo4j account Cloud"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = [];\n\nfor (const item of $input.all()) {\n  // Essayez d'abord content, sinon data\n  let rawCode = item.json.content || item.json.data;\n\n  // Vérifie que rawCode est une chaîne\n  if (typeof rawCode === 'string') {\n    try {\n      rawCode = rawCode\n        .replace(/^```(?:java)?/, '')  // Supprime ```java\n        .replace(/```$/, '')           // Supprime ```\n        .replace(/\\r/g, '')            // Supprime \\r\n        .trim();                       // Trim les espaces\n    } catch (e) {\n      // S'il y a une erreur inattendue, garde la valeur d'origine\n      rawCode = item.json.content || item.json.data;\n    }\n  } else {\n    // Si ce n’est pas une chaîne, ignore ou met chaîne vide\n    rawCode = '';\n  }\n\n  // Fonction d’échappement\n  const escapeJavaForCypher = (code) => {\n    return code\n      .replace(/\\\\/g, '\\\\\\\\')\n      .replace(/\"/g, '\\\\\"')\n      .replace(/\\n/g, '\\\\n')\n      .replace(/\\r/g, '');\n  };\n\n  const escapedCode = escapeJavaForCypher(rawCode);\n\n  items.push({\n    json: {\n      ...item.json,\n      cleanedCode: escapedCode,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1140,
+        460
+      ],
+      "id": "d44843df-36fa-4f1e-961e-a0b909a7deb6",
+      "name": "Nettoyage Bad Format"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analyze the following two files and define a relevant and general relationship between them.\nSource:\nFile: {{ $json.source.file }}\n\nPath: {{ $json.source.path }}\n\nSection: {{ $json.source.section }}\n\nContent: {{ $json.source.content }}\n\nTarget:\n\nFile: {{ $json.target.file }}\n\nPath: {{ $json.target.path }}\n\nSection: {{ $json.target.section }}\n\nContent: {{ $json.target.content }}\n\nDecision Criteria:\n\nIf both files belong to the same specific sub-section (e.g., computer_science/Huffman), consider them complementary, associated, or that one documents the other.\n\nIf the sections are different or general (e.g., computer_science vs mathematics), try to find a broad relationship like uses, influences, or compares.\n\nIf no relevant relationship exists, return type = \"different\" with a simple justification indicating that they deal with distinct topics.\n\nAlso analyze the content to confirm or refute the relationship.\n\nExpected Format (valid JSON):\n\njson\nCopier\nModifier\n{\n  \"source\": \"{{ $json.source.file }}\",\n  \"target\": \"{{ $json.target.file }}\",\n  \"type\": \"<relationship_type>\",\n  \"justification\": \"<concise_explanation>\",\n  \"source_section\": \"{{ $json.source.section }}\",\n  \"target_section\": \"{{ $json.target.section }}\"\n}",
+        "options": {
+          "systemMessage": "=You are an expert in source code analysis, technical document classification, and knowledge graph modeling.\nYour task is to identify relevant and general relationships between two files by analyzing their content, section, and technical nature.\n\nImportant rules:\n\nIf no meaningful relationship exists, return:\n\"type\": \"different\"\n\"justification\": \"The two files belong to different sections or concepts without a direct link.\"\n\nIf a relationship exists, choose a general type from:\ncomplementary, uses, documents, influences, compares, depends_on, associated.\n\nAvoid overly detailed or specific types (e.g., \"APPLICATION_AND_UNDERLYING_CONCURRENCY_MECHANISM\" → not allowed).\n\nThe justification must be clear but concise, explaining the general reason for the link (avoid overly long or technical analysis).\n\nBe neutral, factual, and structured."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -40,
+        300
+      ],
+      "id": "d1ef3a37-e49d-4505-843d-857bd6f5f65f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "jsCode": "const files = $input.all().map(item => item.json.d);\n\nconst results = [];\n\n// Générer les paires sans doublons et sans auto-paires\nfor (let i = 0; i < files.length; i++) {\n  for (let j = i + 1; j < files.length; j++) {\n    const fileA = files[i];\n    const fileB = files[j];\n\n    results.push({\n      json: {\n        source: {\n          file: fileA.Source,\n          path: fileA.path,\n          section: fileA.section,\n          content: fileA.content\n        },\n        target: {\n          file: fileB.Source,\n          path: fileB.path,\n          section: fileB.section,\n          content: fileB.content\n        }\n      }\n    });\n  }\n}\n\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -480,
+        300
+      ],
+      "id": "d14caa6f-79d3-4244-b2a8-0dbc42901ee7",
+      "name": "Pairs Sans Doublons"
+    },
+    {
+      "parameters": {
+        "jsCode": "const inputItems = $input.all();\n\nconst outputItems = inputItems.flatMap(item => {\n  const {\n    source,\n    target,\n    source_section,\n    target_section,\n    relationshipType,\n    justification\n  } = item.json;\n\n  return [\n    // Relation normale\n    {\n      json: {\n        source,\n        target,\n        source_section,\n        target_section,\n        relationshipType,\n        justification\n      }\n    },\n    // Relation inversée (duplicate)\n    {\n      json: {\n        source: target,\n        target: source,\n        source_section: target_section,\n        target_section: source_section,\n        relationshipType,\n        justification // tu peux ajouter + ' (inversée)' si tu veux l'indiquer\n      }\n    }\n  ];\n});\n\nreturn outputItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        40,
+        0
+      ],
+      "id": "65c0b6a9-5717-4baa-8888-a2d45a3189d0",
+      "name": "Pairs bidirectionnelle"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        320,
+        0
+      ],
+      "id": "598b1ec7-f834-4cfd-9fb2-1c1f5b5c7934",
+      "name": "Loop Over Items2"
+    },
+    {
+      "parameters": {
+        "resource": "graphDb",
+        "cypherQuery": "=MATCH (src:JavaTestgraph1 {Source: \"{{ $json.source }}\"})\nMATCH (tgt:JavaTestgraph1 {Source: \"{{ $json.target }}\"})\nWITH src, tgt, \n     \"{{ $json.relationshipType }}\" AS relType, \n     \"{{ $json.justification }}\" AS justification, \n     \"{{ $json.source_section }}\" AS sourceSection, \n     \"{{ $json.target_section }}\" AS targetSection\nWHERE src IS NOT NULL AND tgt IS NOT NULL\nCALL apoc.create.relationship(\n  src,\n  relType,\n  {\n    justification: justification,\n    source_section: sourceSection,\n    target_section: targetSection\n  },\n  tgt\n)\nYIELD rel\nRETURN src, rel, tgt\n"
+      },
+      "type": "n8n-nodes-neo4j.neo4j",
+      "typeVersion": 1,
+      "position": [
+        540,
+        0
+      ],
+      "id": "283f6867-1d2c-4e53-9596-0bdc1a93448c",
+      "name": "ExecuteQuery graphDb",
+      "credentials": {
+        "neo4jApi": {
+          "id": "XwdiNEDV42io6tPG",
+          "name": "Neo4j account Cloud"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fonction de nettoyage pour Neo4j\nfunction cleanTextForCypher(text) {\n  if (!text) return \"\";\n\n  return text\n    .replace(/\\\\/g, '\\\\\\\\')   // Échapper \\\n    .replace(/\"/g, '\\\\\"')     // Échapper \"\n    .replace(/'/g, \"\\\\'\")     // Échapper '\n    .replace(/\\n/g, ' ')      // Remplacer retour ligne par espace\n    .replace(/\\r/g, ' ')      // Remplacer retour chariot\n    .replace(/\\t/g, ' ')      // Remplacer tabulation\n    .replace(/[\\x00-\\x1F\\x7F]/g, '') // Supprimer caractères de contrôle\n    .replace(/\\s+/g, ' ')     // Réduire les espaces multiples\n    .trim();\n}\n\n// Entrée\nconst raw = $input.first().json.output || \"\";\n\n// Nettoyage brut des balises Markdown (```json ou ```)\nconst cleaned = raw.replace(/```json|```/g, '').trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (err) {\n  throw new Error('Erreur de parsing du JSON dans le champ \"output\" : ' + err.message);\n}\n\n// Nettoyage de la justification\nconst cleanedJustification = cleanTextForCypher(parsed.justification);\n\n// Construction du résultat\nreturn [\n  {\n    json: {\n      source: parsed.source,\n      target: parsed.target,\n      source_section: parsed.source_section,\n      target_section: parsed.target_section,\n      relationshipType: parsed.type,\n      justification: cleanedJustification,\n      extractedAt: new Date().toISOString()\n    }\n  }\n];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        320,
+        320
+      ],
+      "id": "988ee411-1b0d-49f5-9e5d-9dc2bf7c9dcb",
+      "name": "Extract + Nettoyage Justification"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        40,
+        520
+      ],
+      "id": "d0e55f2f-18cc-4e40-b360-5942fc89573c",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "BW6GaQlf4E6FWSRr",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [
+          {
+            "node": "Pairs Sans Doublons",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Execute Command": {
+      "main": [
+        [
+          {
+            "node": "Extract All informations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Execute Command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract All informations": {
+      "main": [
+        [
+          {
+            "node": "Nettoyage Bad Format",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Pairs bidirectionnelle",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Database": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nettoyage Bad Format": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Extract + Nettoyage Justification",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pairs Sans Doublons": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pairs bidirectionnelle": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [],
+        [
+          {
+            "node": "ExecuteQuery graphDb",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "ExecuteQuery graphDb": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract + Nettoyage Justification": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "32d7e348-5b95-437a-b2b2-b790f6f63a6d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
+  },
+  "id": "D0T9naaUz3nMjHAg",
+  "tags": []
+}
