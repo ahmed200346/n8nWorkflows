@@ -7,7 +7,7 @@ Ce projet présente un système complet de **Graph Retrieval-Augmented Generatio
 - Un agent conversationnel connecté à une base de graphes et une mémoire Postgres.
 
 ## 📁 Structure du dépôt
-n8nWorkflows/
+Workflows/
 └── 📂 Graph RAG
     ├── 📄 Graph Database Resources_JAVA+MD.json
     │   └── 🔧 Workflow 1 : Ingestion des ressources Java & Markdown avec leur relations dans Neo4j
