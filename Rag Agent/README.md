@@ -34,52 +34,58 @@ Mettre en place une base vectorielle enrichie à partir de fichiers structurés,
 - Clé API OpenAI  
 - Environnement n8n opérationnel
 
-### Étapes
+### ⚙️ Étapes d'installation
+
+#### 🛠️ Cloner le starter kit n8n
 
 
-# Cloner le starter kit n8n
 git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
 cd self-hosted-ai-starter-kit
 copy .env.example .env
 docker-compose --profile cpu up
 
-
-# Copier les ressources (PDF, Java, Markdown)
+📂 Ajouter les ressources
+# Copier les fichiers PDF, Java, Markdown
 self-hosted-ai-starter-kit/data/shared/resource/
 
-
-- Accéder à l’interface n8n : http://localhost:5678
-- Menu Workflows → Import from file (les deux fichiers JSON)
+🧑‍💻 Interface n8n
+- URL : http://localhost:5678
+- Importer les workflows via : Menu → Workflows → Import from file
 
 🧠 Workflows
 1️⃣ Rag Base de connaisance.json
 📌 Construction de la base vectorielle Qdrant :
-- Lecture de fichiers PDF, Java, Markdown
-- Extraction conditionnelle selon format
-- Transformation du contenu en embeddings via OpenAI
-- Insertion dans Qdrant avec métadonnées
+- 📄 Lecture de fichiers PDF, Java, Markdown
+- ✂️ Extraction conditionnelle selon format
+- 🔍 Transformation en embeddings via OpenAI
+- 📥 Insertion dans Qdrant avec métadonnées
+  
 2️⃣ Rag Agent.json
 🤖 Agent RAG pour recherche augmentée :
-- Reçoit une requête utilisateur
-- Recherche les documents pertinents dans Qdrant
-- Génère une réponse contextualisée via modèle IA
+- 💬 Reçoit une requête utilisateur
+- 🔎 Recherche les documents pertinents via Qdrant
+- 🧠 Génère une réponse contextualisée avec IA
 
 🔍 Test du système
 Une fois les workflows importés et configurés :
-- Utiliser l’interface n8n pour interroger la base vectorielle
-- Exemples de requêtes :
-- "Montre les fichiers liés au mot-clé ‘tokenisation’"
-- "Quelles ressources parlent de la segmentation dans les PDF ?"
+Exemples de requêtes :
+• "Montre les fichiers liés au mot-clé ‘tokenisation’"
+• "Quelles ressources parlent de la segmentation dans les PDF ?"
+
+
 
 📄 Documentation
-Un guide complet est disponible dans documentation.pdf, incluant :
-- Captures d’écran
-- Configuration des nœuds
-- Installation pas à pas
+📘 Le guide complet est disponible dans documentation.pdf, incluant :
+- 🖼️ Captures d’écran
+- 🧩 Configuration des nœuds
+- 🛠️ Installation pas à pas
 
 📌 Auteur
 👤 Ahmed Aziz Ammar
 Créateur de solutions modulaires pour l’orchestration low-code et la recherche intelligente augmentée par l’IA.
 
-Si tu veux l’accompagner d’un badge de version, d’une section "Licence" ou d’un lien vers ton profil GitHub, je peux enrichir ça aussi ! Tu veux qu'on ajoute des tags ou un sommaire automatique ?
+Tu veux aussi que je t’aide à générer un sommaire automatique pour tout ton README, ou à styliser la section test avec des blocs interactifs ou des exemples de réponses simulées ?
+
+
+
 
