@@ -12,7 +12,7 @@ Ce dépôt sert de point central pour regrouper et documenter des workflows cré
 
 ## 🌿 Branchement `Workflow`
 
-La branche [`Workflow`](https://github.com/<ahmed200346>/n8nWorkflows/tree/Workflow) contient les différents projets n8n, chacun dans son propre dossier (ex: `Graph Rag Agent`), prêt à être utilisé et testé.
+La branche [`Workflow`](https://github.com/ahmed200346/n8nWorkflows/tree/Workflow) contient les différents projets n8n, chacun dans son propre dossier (ex: `Graph Rag Agent`), prêt à être utilisé et testé.
 
 ---
 
