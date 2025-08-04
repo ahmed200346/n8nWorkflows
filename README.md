@@ -22,3 +22,5 @@ The [`Workflows`](https://github.com/ahmed200346/n8nWorkflows/tree/Workflows) br
 - `Workflows` branch: individual n8n projects  
 - PDF documentation for each project  
 - Docker is required to run the workflows locally
+
+
