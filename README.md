@@ -1,8 +1,8 @@
 
 
-## 📁 README pour la branche `Workflow`
+## 📁 README pour la branche `Workflows`
 
-# Branche `Workflow` – Projets n8n
+# Branche `Workflows` – Projets n8n
 
 Cette branche regroupe plusieurs projets conçus avec **n8n**, chacun organisé dans un dossier spécifique.
 
