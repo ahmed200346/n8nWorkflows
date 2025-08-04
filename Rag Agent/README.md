@@ -84,7 +84,7 @@ Exemples de requêtes :
 👤 Ahmed Aziz Ammar
 Créateur de solutions modulaires pour l’orchestration low-code et la recherche intelligente augmentée par l’IA.
 
-Tu veux aussi que je t’aide à générer un sommaire automatique pour tout ton README, ou à styliser la section test avec des blocs interactifs ou des exemples de réponses simulées ?
+
 
 
 
