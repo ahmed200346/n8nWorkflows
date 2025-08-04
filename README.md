@@ -1,15 +1,15 @@
 <<<<<<< HEAD
 =======
-
+[![n8n](https://img.shields.io/badge/n8n-Workflow-FF6D6D?style=flat-square&logo=n8n)](https://n8n.io/)
+[![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-DC382C?style=flat-square&logo=qdrant)](https://qdrant.tech/)
+[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o%20mini-412991?style=flat-square&logo=openai)](https://openai.com/)
 
 ## 📁 README pour la branche `Workflows`
 
 # Branche `Workflows` – Projets n8n
 
 Cette branche regroupe plusieurs projets conçus avec **n8n**, chacun organisé dans un dossier spécifique.
-[![n8n](https://img.shields.io/badge/n8n-Workflow-FF6D6D?style=flat-square&logo=n8n)](https://n8n.io/)
-[![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-DC382C?style=flat-square&logo=qdrant)](https://qdrant.tech/)
-[![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o%20mini-412991?style=flat-square&logo=openai)](https://openai.com/)
+
 ## 📂 Organisation
 
 Chaque dossier est un projet n8n contenant :
