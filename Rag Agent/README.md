@@ -1,88 +1,93 @@
-# 📚 RAG Agent avec n8n, Qdrant & multi-format
+# 📚 RAG Agent with n8n, Qdrant & Multi-Format
 
-Ce projet met en place un système **Retrieval-Augmented Generation (RAG)** permettant d’indexer des fichiers PDF, Java, et Markdown dans une base vectorielle Qdrant à l’aide de **n8n** en mode self-hosted.
-
----
-
-## 📁 Structure du dépôt
-
-
-Workflows/ └── 📂 RAG Agent ├── 📄 Rag Base de connaisance.json │   └── 🔧 Workflow 1 : Création de la base vectorielle Qdrant ├── 📄 Rag Agent.json │   └── 🤖 Workflow 2 : Agent conversationnel exploitant les embeddings ├── 📄 documentation.pdf │   └── 📘 Guide complet avec explications et procédure d’installation └── 📂 resource/ ├── 📄 *.pdf ├── 🔤 *.java ├── 📝 *.md / *.markdown └── 📂 (Sous-dossiers facultatifs selon la structure des ressources)
+This project sets up a **Retrieval-Augmented Generation (RAG)** system that indexes PDF, Java, and Markdown files into a Qdrant vector database using **n8n** in self-hosted mode.
 
 ---
 
-## 🚀 Objectif
+## 📁 Repository Structure
 
-Mettre en place une base vectorielle enrichie à partir de fichiers structurés, puis exploiter cette base via un agent IA pour des recherches **contextuelles, précises et traçables**.
+Workflows/  
+└── 📂 RAG Agent  
+    ├── 📄 Rag Knowledge Base.json  
+    │   └── 🔧 Workflow 1: Creating the Qdrant vector database  
+    ├── 📄 Rag Agent.json  
+    │   └── 🤖 Workflow 2: Conversational agent using embeddings  
+    ├── 📄 documentation.pdf  
+    │   └── 📘 Complete guide with explanations and installation steps  
+    └── 📂 resource/  
+        ├── 📄 *.pdf  
+        ├── 🔤 *.java  
+        ├── 📝 *.md / *.markdown  
+        └── 📂 (Optional subfolders depending on resource structure)
+
+---
+
+## 🚀 Purpose
+
+Build an enriched vector database from structured files, then use it via an AI agent for **contextual, accurate, and traceable** search.
 
 ---
 
 ## 🧰 Technologies
 
-- [n8n](https://n8n.io/) (self-hosted avec Docker)
-- [Qdrant](https://qdrant.tech/) Vector Store
-- [OpenAI](https://openai.com/) (embeddings)
-- [LangChain](https://www.langchain.com/) (modèles & loaders)
+- [n8n](https://n8n.io/) (self-hosted with Docker)  
+- [Qdrant](https://qdrant.tech/) Vector Store  
+- [OpenAI](https://openai.com/) (embeddings)  
+- [LangChain](https://www.langchain.com/) (models & loaders)
 
 ---
 
 ## ⚙️ Installation
 
-### Prérequis
+### Prerequisites
 
-- Docker Desktop installé  
-- Clé API OpenAI  
-- Environnement n8n opérationnel
+- Docker Desktop installed  
+- OpenAI API key  
+- Running n8n environment
 
-### ⚙️ Étapes d'installation
+### ⚙️ Installation Steps
 
-#### 🛠️ Cloner le starter kit n8n
-
+#### 🛠️ Clone the n8n starter kit
 
 git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
 cd self-hosted-ai-starter-kit
 copy .env.example .env
 docker-compose --profile cpu up
 
-📂 Ajouter les ressources
-# Copier les fichiers PDF, Java, Markdown
+📂 Add resources
+Copy your PDF, Java, and Markdown files to:
 self-hosted-ai-starter-kit/data/shared/resource/
-
-🧑‍💻 Interface n8n
-- URL : http://localhost:5678
-- Importer les workflows via : Menu → Workflows → Import from file
-
+🧑‍💻 n8n Interface
+- URL: http://localhost:5678
+- Import workflows via: Menu → Workflows → Import from file
 🧠 Workflows
-1️⃣ Rag Base de connaisance.json
-📌 Construction de la base vectorielle Qdrant :
-- 📄 Lecture de fichiers PDF, Java, Markdown
-- ✂️ Extraction conditionnelle selon format
-- 🔍 Transformation en embeddings via OpenAI
-- 📥 Insertion dans Qdrant avec métadonnées
-  
+1️⃣ Rag Knowledge Base.json
+📌 Builds the Qdrant vector database:
+- 📄 Reads PDF, Java, Markdown files
+- ✂️ Conditional extraction based on format
+- 🔍 Converts to embeddings via OpenAI
+- 📥 Inserts into Qdrant with metadata
 2️⃣ Rag Agent.json
-🤖 Agent RAG pour recherche augmentée :
-- 💬 Reçoit une requête utilisateur
-- 🔎 Recherche les documents pertinents via Qdrant
-- 🧠 Génère une réponse contextualisée avec IA
-
-🔍 Test du système
-Une fois les workflows importés et configurés :
-Exemples de requêtes :
-• "Montre les fichiers liés au mot-clé ‘tokenisation’"
-• "Quelles ressources parlent de la segmentation dans les PDF ?"
-
-
+🤖 RAG Agent for augmented search:
+- 💬 Receives user query
+- 🔎 Searches relevant documents via Qdrant
+- 🧠 Generates contextualized response using AI
+🔍 System Testing
+Once workflows are imported and configured:
+Example queries:
+• "Show files related to the keyword ‘tokenization’"
+• "Which resources mention segmentation in PDFs?"
 
 📄 Documentation
-📘 Le guide complet est disponible dans documentation.pdf, incluant :
-- 🖼️ Captures d’écran
-- 🧩 Configuration des nœuds
-- 🛠️ Installation pas à pas
+📘 The full guide is available in documentation.pdf, including:
+- 🖼️ Screenshots
+- 🧩 Node configuration
+- 🛠️ Step-by-step installation
 
-📌 Auteur
+📌 Author
 👤 Ahmed Aziz Ammar
-Créateur de solutions modulaires pour l’orchestration low-code et la recherche intelligente augmentée par l’IA.
+Creator of modular solutions for low-code orchestration and intelligent AI-powered search.
+
 
 
 
