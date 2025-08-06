@@ -1,24 +1,24 @@
 # n8nWorkflows
 
-Bienvenue dans le dépôt **n8nWorkflows**, une bibliothèque modulaire de projets automatisés conçus avec [n8n](https://n8n.io), orchestrés et documentés pour une intégration rapide.
+Welcome to the **n8nWorkflows** repository — a modular library of automated projects built with [n8n](https://n8n.io), orchestrated and documented for quick integration.
 
-## 🎯 Objectif du dépôt
+## 🎯 Repository Purpose
 
-Ce dépôt sert de point central pour regrouper et documenter des workflows créés dans l'environnement n8n (via Docker). Chaque projet dans la branche `Workflow` inclut :
+This repository serves as a central hub for collecting and documenting workflows created in the n8n environment (via Docker). Each project in the `Workflows` branch includes:
 
-- Des fichiers `.json` pour importer les workflows dans n8n
-- Des guides PDF détaillant la configuration et les processus utilisés
-- Un dossier `resources/` avec les fichiers nécessaires à l'exécution
+- `.json` files to import workflows into n8n  
+- PDF guides detailing configuration and workflow processes  
+- A `resources/` folder containing all necessary execution files
 
-## 🌿 Branchement `Workflows`
+## 🌿 `Workflows` Branch
 
-La branche [`Workflows`](https://github.com/ahmed200346/n8nWorkflows/tree/Workflows) contient les différents projets n8n, chacun dans son propre dossier (ex: `Graph Rag Agent`), prêt à être utilisé et testé.
+The [`Workflows`](https://github.com/ahmed200346/n8nWorkflows/tree/Workflows) branch contains various n8n projects, each in its own folder (e.g., `Graph Rag Agent`), ready to be used and tested.
 
 ---
 
-## 📦 Contenu du dépôt
+## 📦 Repository Contents
 
-- `README.md` *(ce fichier)*  
-- Branche `Workflow` : projets n8n individuels
-- Documentation PDF pour chaque projet
-- Docker est requis pour utiliser les workflows localement
+- `README.md` *(this file)*  
+- `Workflows` branch: individual n8n projects  
+- PDF documentation for each project  
+- Docker is required to run the workflows locally
