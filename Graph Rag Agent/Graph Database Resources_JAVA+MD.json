@@ -1,29 +1,31 @@
 {
-  "name": "Graph Database Resources:JAVA+MD",
+  "name": "New Grraph Database",
   "nodes": [
     {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2460,
-        440
+        -2640,
+        570
       ],
-      "id": "1dca4b41-abb3-48d3-aaea-05bcdc2e5b40",
+      "id": "c623e2b5-253e-42b0-886f-50c5731764c9",
       "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
-        "fileSelector": "/data/shared/resource/**/*",
-        "options": {}
+        "fileSelector": "/data/shared/Documents/**/*.{java,md}",
+        "options": {
+          "fileExtension": ""
+        }
       },
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        -2240,
-        440
+        -2420,
+        570
       ],
-      "id": "f1d8a114-a8df-4e3c-bf05-115f32286e25",
+      "id": "65e08c73-e3a0-4cbe-b653-4fdb6135221f",
       "name": "Read/Write Files from Disk"
     },
     {
@@ -34,10 +36,10 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -2020,
-        440
+        -2200,
+        570
       ],
-      "id": "a6d60687-edb2-4dda-a1ee-00ca35ca4f8b",
+      "id": "78451036-3115-4e49-966e-2a38e98e6cf2",
       "name": "Extract from File"
     },
     {
@@ -47,23 +49,23 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -700,
-        440
+        -880,
+        570
       ],
-      "id": "d233a07c-6d85-4ef1-b50b-d695cab48053",
+      "id": "d23527c8-51bd-441c-99d2-b9e31cd36e47",
       "name": "Loop Over Items"
     },
     {
       "parameters": {
-        "command": "find  /data/shared/resource/*"
+        "command": "find  /data/shared/Documents/*"
       },
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        -1580,
-        440
+        -1760,
+        570
       ],
-      "id": "281bf9a2-03a6-48fc-b859-7d949ebac7c8",
+      "id": "192391f7-fee8-44fd-b227-d363fb59b993",
       "name": "Execute Command"
     },
     {
@@ -89,23 +91,23 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1800,
-        440
+        -1980,
+        570
       ],
-      "id": "47249efe-7502-4adf-9765-c404adf0eac7",
+      "id": "1747aac3-d0ee-416a-b3a0-74ba8a003df6",
       "name": "Edit Fields1"
     },
     {
       "parameters": {
-        "jsCode": "const item = $input.first();\nconst stdout = item.json.stdout || \"\";\n\n// Étape 1: Extraire les lignes qui se terminent par .java ou .md\nconst lines = stdout\n  .split('\\n')\n  .map(line => line.trim())\n  .filter(line => line.endsWith('.java') || line.endsWith('.markdown') || line.endsWith('.md'));\n\n// Étape 2: Récupérer les items du node \"Edit Fields1\" de façon sécurisée\nlet editItems = [];\n\ntry {\n  const nodeItems = $('Edit Fields1').all();\n  for (const e of nodeItems) {\n    if (e && e.json) {\n      editItems.push(e.json);\n    }\n  }\n} catch (err) {\n  // En cas d'erreur, editItems restera vide\n  editItems = [];\n}\n\n// Étape 3: Construire les résultats\nconst results = [];\n\nfor (const line of lines) {\n  const fullPath = line;\n\n  // Chemin relatif\n  const relativePath = fullPath.replace('/data/shared/resource/', '');\n\n  const parts = relativePath.split('/');\n  const fileName = parts.pop(); // le nom du fichier\n  const section = parts.join('/'); // dossier parent\n\n  // Chercher dans editItems celui qui correspond au fichier\n  const match = editItems.find(e => e.file_name === fileName);\n\n  results.push({\n    json: {\n      path: fullPath,\n      section: section,\n      file: fileName,\n      content: match ? match.content : null,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn results;\n"
+        "jsCode": "const item = $input.first();\nconst stdout = item.json.stdout || \"\";\n\n// Étape 1: Extraire les lignes qui se terminent par .java ou .md\nconst lines = stdout\n  .split('\\n')\n  .map(line => line.trim())\n  .filter(line => line.endsWith('.java') || line.endsWith('.markdown') || line.endsWith('.md'));\n\n// Étape 2: Récupérer les items du node \"Edit Fields1\" de façon sécurisée\nlet editItems = [];\n\ntry {\n  const nodeItems = $('Edit Fields1').all();\n  for (const e of nodeItems) {\n    if (e && e.json) {\n      editItems.push(e.json);\n    }\n  }\n} catch (err) {\n  // En cas d'erreur, editItems restera vide\n  editItems = [];\n}\n\n// Étape 3: Construire les résultats\nconst results = [];\n\nfor (const line of lines) {\n  const fullPath = line;\n\n  // Chemin relatif\n  const relativePath = fullPath.replace('/data/shared/Documents/', '');\n\n  const parts = relativePath.split('/');\n  const fileName = parts.pop(); // le nom du fichier\n  const section = parts.join('/'); // dossier parent\n\n  // Chercher dans editItems celui qui correspond au fichier\n  const match = editItems.find(e => e.file_name === fileName);\n\n  results.push({\n    json: {\n      path: fullPath,\n      section: section,\n      file: fileName,\n      content: match ? match.content : null,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn results;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1360,
-        460
+        -1540,
+        570
       ],
-      "id": "fd12d4a6-af22-41f4-bc07-bd4a2cdd03ba",
+      "id": "75256f23-62e7-4205-ac98-b8eb16ca0867",
       "name": "Extract All informations"
     },
     {
@@ -149,10 +151,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -920,
-        440
+        -1100,
+        570
       ],
-      "id": "61fcc270-22dd-4534-8dfa-8b7ee69f7103",
+      "id": "66e492a1-0d47-4ec6-a2fa-0297e08adf86",
       "name": "Edit Fields"
     },
     {
@@ -162,24 +164,24 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -260,
-        300
+        -440,
+        420
       ],
-      "id": "3bc8a213-7341-4517-a9e7-db2c1a580067",
+      "id": "640175ad-c48d-4262-b018-bb00abe03542",
       "name": "Loop Over Items1"
     },
     {
       "parameters": {
         "resource": "graphDb",
-        "cypherQuery": "=MERGE (d:JavaTestgraph1 {Source: \"{{ $json.file_name }}\"}) ON CREATE SET   d.content = \"{{ $json.content }}\", d.extractedAt = \"{{ $json.extractedAT }}\",d.section=\"{{ $json.section }}\",d.path=\"{{ $json.PATH }}\" RETURN d"
+        "cypherQuery": "=MERGE (d:Graphadatabase {Source: \"{{ $json.file_name }}\", path: \"{{ $json.PATH }}\"}) \nON CREATE SET   \n  d.content = \"{{ $json.content }}\",\n  d.section=\"{{ $json.section }}\",\n  d.extractedAt = \"{{ $json.extractedAT }}\",\n  d.path = \"{{ $json.PATH }}\" \nRETURN d"
       },
       "type": "n8n-nodes-neo4j.neo4j",
       "typeVersion": 1,
       "position": [
-        -480,
-        500
+        -660,
+        620
       ],
-      "id": "42685908-01f7-4f34-8edd-a19525f80742",
+      "id": "f354ce84-a3a0-4998-ad52-a14b4e4bd488",
       "name": "Create Database",
       "credentials": {
         "neo4jApi": {
@@ -195,10 +197,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1140,
-        460
+        -1320,
+        570
       ],
-      "id": "d44843df-36fa-4f1e-961e-a0b909a7deb6",
+      "id": "1974bce6-5493-4b3c-80dc-eabc7c66a522",
       "name": "Nettoyage Bad Format"
     },
     {
@@ -212,10 +214,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -40,
-        300
+        -220,
+        420
       ],
-      "id": "d1ef3a37-e49d-4505-843d-857bd6f5f65f",
+      "id": "5c90cffb-f975-4374-b6a5-30f8044782d7",
       "name": "AI Agent"
     },
     {
@@ -225,10 +227,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -480,
-        300
+        -660,
+        420
       ],
-      "id": "d14caa6f-79d3-4244-b2a8-0dbc42901ee7",
+      "id": "0147b950-a708-4fdb-b275-d4e00134ad1b",
       "name": "Pairs Sans Doublons"
     },
     {
@@ -238,10 +240,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        40,
-        0
+        -150,
+        120
       ],
-      "id": "65c0b6a9-5717-4baa-8888-a2d45a3189d0",
+      "id": "54232910-41ba-48a2-89d4-f76b524d4dc9",
       "name": "Pairs bidirectionnelle"
     },
     {
@@ -251,24 +253,24 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        320,
-        0
+        140,
+        120
       ],
-      "id": "598b1ec7-f834-4cfd-9fb2-1c1f5b5c7934",
+      "id": "c3cd4713-300b-48c5-b905-30bca419ae93",
       "name": "Loop Over Items2"
     },
     {
       "parameters": {
         "resource": "graphDb",
-        "cypherQuery": "=MATCH (src:JavaTestgraph1 {Source: \"{{ $json.source }}\"})\nMATCH (tgt:JavaTestgraph1 {Source: \"{{ $json.target }}\"})\nWITH src, tgt, \n     \"{{ $json.relationshipType }}\" AS relType, \n     \"{{ $json.justification }}\" AS justification, \n     \"{{ $json.source_section }}\" AS sourceSection, \n     \"{{ $json.target_section }}\" AS targetSection\nWHERE src IS NOT NULL AND tgt IS NOT NULL\nCALL apoc.create.relationship(\n  src,\n  relType,\n  {\n    justification: justification,\n    source_section: sourceSection,\n    target_section: targetSection\n  },\n  tgt\n)\nYIELD rel\nRETURN src, rel, tgt\n"
+        "cypherQuery": "=MERGE (src:Graphadatabase {Source: \"{{ $json.source }}\",section: \"{{ $json.source_section }}\"})\nMERGE (tgt:Graphadatabase {Source: \"{{ $json.target }}\",section : \"{{ $json.target_section }}\"})\nMERGE (src)-[rel:`{{ $json.relationshipType }}`]->(tgt)\nON CREATE SET \n  rel.justification = \"{{ $json.justification }}\",\n  rel.source_section = \"{{ $json.source_section }}\",\n  rel.target_section = \"{{ $json.target_section }}\"\nRETURN src.Source, type(rel), tgt.Source"
       },
       "type": "n8n-nodes-neo4j.neo4j",
       "typeVersion": 1,
       "position": [
-        540,
-        0
+        480,
+        240
       ],
-      "id": "283f6867-1d2c-4e53-9596-0bdc1a93448c",
+      "id": "a2e862da-1330-42e8-811a-e0a8e64bb1a4",
       "name": "ExecuteQuery graphDb",
       "credentials": {
         "neo4jApi": {
@@ -284,28 +286,36 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        320,
-        320
+        140,
+        445
       ],
-      "id": "988ee411-1b0d-49f5-9e5d-9dc2bf7c9dcb",
+      "id": "f71ee9b2-feef-4359-b15b-f314220321f7",
       "name": "Extract + Nettoyage Justification"
     },
     {
       "parameters": {
-        "options": {}
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-mini"
+        },
+        "options": {
+          "temperature": 0
+        }
       },
-      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-      "typeVersion": 1,
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
       "position": [
-        40,
-        520
+        -140,
+        640
       ],
-      "id": "d0e55f2f-18cc-4e40-b360-5942fc89573c",
-      "name": "Google Gemini Chat Model",
+      "id": "78b6ab0f-1460-42c8-ac0b-ecb5ab75113e",
+      "name": "OpenAI Chat Model",
       "credentials": {
-        "googlePalmApi": {
-          "id": "BW6GaQlf4E6FWSRr",
-          "name": "Google Gemini(PaLM) Api account"
+        "openAiApi": {
+          "id": "rKtHTy7g6jG36Xzd",
+          "name": "OpenAi account 2"
         }
       }
     }
@@ -514,7 +524,7 @@
         ]
       ]
     },
-    "Google Gemini Chat Model": {
+    "OpenAI Chat Model": {
       "ai_languageModel": [
         [
           {
@@ -530,11 +540,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "32d7e348-5b95-437a-b2b2-b790f6f63a6d",
+  "versionId": "c9c30485-63de-4690-92ae-4c2b60710237",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
   },
-  "id": "D0T9naaUz3nMjHAg",
+  "id": "T1KCz5f2QZE1Gnk3",
   "tags": []
 }
