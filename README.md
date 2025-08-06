@@ -2,44 +2,41 @@
 [![Qdrant](https://img.shields.io/badge/Qdrant-Vector%20DB-DC382C?style=flat-square&logo=qdrant)](https://qdrant.tech/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-GPT--4o%20mini-412991?style=flat-square&logo=openai)](https://openai.com/)
 
+## 📁 README for the `Workflows` Branch
 
-## 📁 README pour la branche `Workflows`
+# `Workflows` Branch – n8n Projects
 
-# Branche `Workflows` – Projets n8n
+This branch contains several projects built with **n8n**, each organized in its own folder.
 
-Cette branche regroupe plusieurs projets conçus avec **n8n**, chacun organisé dans un dossier spécifique.
+## 📂 Structure
 
-## 📂 Organisation
+Each folder is an n8n project containing:
+- `workflow.json`: the file to import into n8n
+- `documentation.pdf`: a complete guide explaining:
+  - the workflow process
+  - configuration details
+  - installation steps
+- `resources/`: all necessary files (data, scripts, etc.)
 
-Chaque dossier est un projet n8n contenant :
-- `workflow.json` : le fichier à importer dans n8n
-- `documentation.pdf` : une documentation complète expliquant :
-  - le processus du workflow
-  - la configuration
-  - les étapes d'installation
-- `resources/` : tous les fichiers nécessaires (données, scripts, etc.)
+## 🐳 Prerequisites
 
-## 🐳 Prérequis
+These workflows are designed to run in a **Dockerized n8n environment**. Make sure your n8n instance is up and running via Docker before importing the JSON files.
 
-Les workflows sont conçus pour fonctionner dans un environnement **n8n Dockerisé**. Assure-toi que ton instance n8n est opérationnelle via Docker avant d'importer les fichiers JSON.
+## 📥 Importing into n8n
 
-## 📥 Importation dans n8n
+1. Start your n8n instance using Docker.  
+2. Access the n8n web interface.  
+3. Import the `.json` file from your project.  
+4. Follow the steps in the PDF documentation for configuration.
 
-1. Lance ton instance n8n avec Docker.
-2. Accède à l’interface web n8n.
-3. Importe le fichier `.json` de ton projet.
-4. Suis les étapes dans la documentation PDF pour la configuration.
-
-## 🧠 Exemples de projets
+## 🧠 Project Examples
 
 - `Graph Rag Agent`  
-  → Création d’une base de données + automatisation du traitement de données textuelles.
+  → Creates a database + automates processing of textual data.
 
 - `Agent Qdrant Integration`  
-  → Connexion intelligente entre workflow et base vectorielle.
+  → Smart connection between workflow and vector database.
 
+## 📝 Contributing
 
-## 📝 Contribuer
-
-N’hésite pas à proposer de nouveaux workflows, améliorer la documentation, ou structurer davantage les ressources.
->>>>>>> 3344c24cb044314f4a30dff701efb0da0f6cefbe
+Feel free to suggest new workflows, improve documentation, or better structure the resources.
