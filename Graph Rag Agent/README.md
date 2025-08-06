@@ -101,4 +101,3 @@ The complete guide is available in [`documentation.pdf`](./documentation.pdf) �
 ## 📌 Author
 
 👤 **Ahmed Aziz Ammar**  
-Passionate about modular architectures, low-code orchestration, and AI connected to semantic databases.
