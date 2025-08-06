@@ -1,50 +1,51 @@
-# 📚 Graph RAG Agent avec n8n, Neo4j & Java/Markdown
+# 📚 Graph RAG Agent with n8n, Neo4j & Java/Markdown
 
-Ce projet présente un système complet de **Graph Retrieval-Augmented Generation (Graph RAG)** basé sur :
-- Des fichiers source Java et Markdown.
-- Une base de graphes Neo4j hébergée dans le cloud.
-- Une orchestration via n8n en mode self-hosted.
-- Un agent conversationnel connecté à une base de graphes et une mémoire Postgres.
+This project presents a complete **Graph Retrieval-Augmented Generation (Graph RAG)** system based on:
+- Java and Markdown source files  
+- A cloud-hosted Neo4j graph database  
+- Orchestration via self-hosted n8n  
+- A conversational agent connected to the graph database and a Postgres memory
 
-## 📁 Structure du dépôt
-Workflows/
-└── 📂 Graph RAG
-    ├── 📄 Graph Database Resources_JAVA+MD.json
-    │   └── 🔧 Workflow 1 : Ingestion des ressources Java & Markdown avec leur relations dans Neo4j
-    ├── 📄 Graph RAG AGENT new resource JAVA,MD.json
-    │   └── 🤖 Workflow 2 : Agent Graph RAG conversationnel interrogeant Neo4j
-    ├── 📄 documentation.pdf
-    │   └── 📘 Guide complet du système avec illustrations et explications détaillées
-    └── 📂 resource/
-        ├── 🔤 *.java
-        ├── 📝 *.md / *.markdown
-        └── 📂 (Sous-dossiers facultatifs selon la structure des ressources)
+## 📁 Repository Structure
 
-## 🚀 Objectif
+Workflows/  
+└── 📂 Graph RAG  
+    ├── 📄 Graph Database Resources_JAVA+MD.json  
+    │   └── 🔧 Workflow 1: Ingest Java & Markdown resources and their relationships into Neo4j  
+    ├── 📄 Graph RAG AGENT new resource JAVA,MD.json  
+    │   └── 🤖 Workflow 2: Graph RAG conversational agent querying Neo4j  
+    ├── 📄 documentation.pdf  
+    │   └── 📘 Complete system guide with illustrations and detailed explanations  
+    └── 📂 resource/  
+        ├── 🔤 *.java  
+        ├── 📝 *.md / *.markdown  
+        └── 📂 (Optional subfolders depending on resource structure)
 
-Créer une base de connaissances intelligente en graphes en indexant du code source Java et sa documentation, puis interagir avec un agent IA capable de raisonner sur les relations entre fichiers, tout en justifiant les réponses.
+## 🚀 Purpose
+
+Build an intelligent graph-based knowledge base by indexing Java source code and its documentation, then interact with an AI agent capable of reasoning over file relationships and justifying its answers.
 
 ## 🧰 Technologies
 
-- [n8n](https://n8n.io/) (self-hosted avec Docker)
-- [Neo4j AuraDB](https://console.neo4j.io/)
-- OpenAI / Gemini (IA)
-- Postgres (mémoire conversationnelle)
-- LangChain (agent Graph RAG)
+- [n8n](https://n8n.io/) (self-hosted with Docker)  
+- [Neo4j AuraDB](https://console.neo4j.io/)  
+- OpenAI / Gemini (AI)  
+- Postgres (conversational memory)  
+- LangChain (Graph RAG agent)
 
 ## ⚙️ Installation
 
-### Prérequis
+### Prerequisites
 
-- Docker Desktop installé
-- ~7 Go d’espace disque
-- Compte Neo4j AuraDB
-- Clé API OpenAI ou Gemini
-- Clé API Google AI Studio si Gemini utilisé
+- Docker Desktop installed  
+- ~7 GB of disk space  
+- Neo4j AuraDB account  
+- OpenAI or Gemini API key  
+- Google AI Studio API key if using Gemini
 
-### Étapes
+### Steps
 
-1. Cloner le dépôt n8n :
+1. Clone the n8n starter kit:
     ```bash
     git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
     cd self-hosted-ai-starter-kit
@@ -52,55 +53,52 @@ Créer une base de connaissances intelligente en graphes en indexant du code sou
     docker-compose --profile cpu up
     ```
 
-2. Copier les fichiers Java/Markdown dans :
+2. Copy your Java/Markdown files to:
     ```
     self-hosted-ai-starter-kit/data/shared/resource/
     ```
 
-3. Importer les workflows via l'interface n8n :
-    - http://localhost:5678
-    - Menu Workflows → Import from file
+3. Import the workflows via the n8n interface:
+    - http://localhost:5678  
+    - Menu → Workflows → Import from file
 
 ## 🧠 Workflows
 
 ### 1️⃣ `Graph Database Resources_JAVA+MD.json`
 
-> 📌 Ingestion et structuration de fichiers en base de graphes Neo4j
+> 📌 Ingest and structure files into the Neo4j graph database
 
-- Lit tous les fichiers `.java`, `.md`, `.markdown`
-- Extrait, nettoie, et enrichit les métadonnées
-- Crée les nœuds + relations sémantiques avec un agent IA
-- Insertions via requêtes Cypher
+- Reads all `.java`, `.md`, `.markdown` files  
+- Extracts, cleans, and enriches metadata  
+- Creates nodes + semantic relationships using an AI agent  
+- Inserts data via Cypher queries
 
 ### 2️⃣ `Graph RAG AGENT new resource JAVA,MD.json`
 
-> 🤖 Agent conversationnel Graph RAG basé sur les données Neo4j
+> 🤖 Graph RAG conversational agent based on Neo4j data
 
-- Reçoit des questions via chat
-- Utilise une IA + base Neo4j pour répondre
-- Justifie chaque réponse avec relation + métadonnées + contenu
+- Receives questions via chat  
+- Uses AI + Neo4j graph to respond  
+- Justifies each answer with relationships, metadata, and content
 
-## 🔍 Test du système
+## 🔍 System Testing
 
-> Une fois les deux workflows importés et exécutés :
+> Once both workflows are imported and executed:
 
-- Accéder à l'interface n8n
-- Envoyer des requêtes : *"Quel fichier documente tel autre fichier ?"*, *"Quelle est la relation entre A.java et B.md ?"*
+- Access the n8n interface  
+- Send queries like: *"Which file documents another?"*, *"What is the relationship between A.java and B.md?"*
 
-## ✨ Résultat
+## ✨ Result
 
-- Réponses contextualisées
-- Analyse multi-document sans hallucination
-- Justifications transparentes et traçabilité complète
+- Contextualized responses  
+- Multi-document analysis without hallucination  
+- Transparent justifications and full traceability
 
 ## 📄 Documentation
 
-Le guide complet est disponible dans [`documentation.pdf`](./documentation.pdf) — il contient les captures d’écran, configurations détaillées des nœuds et procédures spécifiques.
+The complete guide is available in [`documentation.pdf`](./documentation.pdf) — it includes screenshots, detailed node configurations, and specific procedures.
 
-## 📌 Auteur
+## 📌 Author
 
-👤 **Ahmed Aziz Ammar**
-
-Passionné par les architectures modulaires, l’orchestration low-code, et l’IA connectée à des bases sémantiques.
-
----
+👤 **Ahmed Aziz Ammar**  
+Passionate about modular architectures, low-code orchestration, and AI connected to semantic databases.
