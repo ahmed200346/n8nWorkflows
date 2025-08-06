@@ -34,7 +34,7 @@ These workflows are designed to run in a **Dockerized n8n environment**. Make su
 - `Graph Rag Agent`  
   → Creates a database + automates processing of textual data.
 
-- `Agent Qdrant Integration`  
+- `Rag Agent with Qdrant Vector Store`  
   → Smart connection between workflow and vector database.
 
 ## 📝 Contributing
