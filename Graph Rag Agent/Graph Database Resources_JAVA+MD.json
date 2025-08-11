@@ -1,15 +1,15 @@
 {
-  "name": "New Grraph Database",
+  "name": "My workflow",
   "nodes": [
     {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -2640,
-        570
+        -3000,
+        1035
       ],
-      "id": "c623e2b5-253e-42b0-886f-50c5731764c9",
+      "id": "8858ce0c-0b47-4052-b0eb-db6d25900d5a",
       "name": "When clicking ‘Execute workflow’"
     },
     {
@@ -22,10 +22,10 @@
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        -2420,
-        570
+        -2780,
+        1035
       ],
-      "id": "65e08c73-e3a0-4cbe-b653-4fdb6135221f",
+      "id": "dcd0acfe-a660-4c04-a769-ea3ff74877b9",
       "name": "Read/Write Files from Disk"
     },
     {
@@ -36,23 +36,24 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -2200,
-        570
+        -2560,
+        1035
       ],
-      "id": "78451036-3115-4e49-966e-2a38e98e6cf2",
+      "id": "a3d93b2f-3a59-4bc6-9386-10a11bcfaa5e",
       "name": "Extract from File"
     },
     {
       "parameters": {
+        "batchSize": 100,
         "options": {}
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -880,
-        570
+        -1240,
+        1035
       ],
-      "id": "d23527c8-51bd-441c-99d2-b9e31cd36e47",
+      "id": "0ef4e800-e335-4faa-83e7-ab9c31a6905a",
       "name": "Loop Over Items"
     },
     {
@@ -62,10 +63,10 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        -1760,
-        570
+        -2120,
+        1035
       ],
-      "id": "192391f7-fee8-44fd-b227-d363fb59b993",
+      "id": "e1bbb0e7-8446-45cb-8048-23b65e16e4c8",
       "name": "Execute Command"
     },
     {
@@ -91,10 +92,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1980,
-        570
+        -2340,
+        1035
       ],
-      "id": "1747aac3-d0ee-416a-b3a0-74ba8a003df6",
+      "id": "e7cdeab7-a595-4e50-bbab-661dfed60756",
       "name": "Edit Fields1"
     },
     {
@@ -104,10 +105,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1540,
-        570
+        -1900,
+        1035
       ],
-      "id": "75256f23-62e7-4205-ac98-b8eb16ca0867",
+      "id": "e58c2fb2-453a-41fd-ac6e-4b09147e4525",
       "name": "Extract All informations"
     },
     {
@@ -139,8 +140,8 @@
               "type": "string"
             },
             {
-              "id": "aa8b2315-8a6d-4494-86a1-bf274185f400",
-              "name": "extractedAT",
+              "id": "3fc0295d-639d-494a-9a0b-e353f5ff1526",
+              "name": "extracted",
               "value": "={{ $json.extractedAt }}",
               "type": "string"
             }
@@ -151,37 +152,24 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1100,
-        570
+        -1460,
+        1035
       ],
-      "id": "66e492a1-0d47-4ec6-a2fa-0297e08adf86",
+      "id": "960dba03-0ba2-4514-a12e-f656dda67eca",
       "name": "Edit Fields"
     },
     {
       "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        -440,
-        420
-      ],
-      "id": "640175ad-c48d-4262-b018-bb00abe03542",
-      "name": "Loop Over Items1"
-    },
-    {
-      "parameters": {
         "resource": "graphDb",
-        "cypherQuery": "=MERGE (d:Graphadatabase {Source: \"{{ $json.file_name }}\", path: \"{{ $json.PATH }}\"}) \nON CREATE SET   \n  d.content = \"{{ $json.content }}\",\n  d.section=\"{{ $json.section }}\",\n  d.extractedAt = \"{{ $json.extractedAT }}\",\n  d.path = \"{{ $json.PATH }}\" \nRETURN d"
+        "cypherQuery": "={{ $('Create Batch+Cypher Query').item.json.cypherQuery }}"
       },
       "type": "n8n-nodes-neo4j.neo4j",
       "typeVersion": 1,
       "position": [
-        -660,
-        620
+        -800,
+        1035
       ],
-      "id": "f354ce84-a3a0-4998-ad52-a14b4e4bd488",
+      "id": "6388eaed-83c8-479c-a57d-6f76af4ac4df",
       "name": "Create Database",
       "credentials": {
         "neo4jApi": {
@@ -192,16 +180,30 @@
     },
     {
       "parameters": {
-        "jsCode": "const items = [];\n\nfor (const item of $input.all()) {\n  // Essayez d'abord content, sinon data\n  let rawCode = item.json.content || item.json.data;\n\n  // Vérifie que rawCode est une chaîne\n  if (typeof rawCode === 'string') {\n    try {\n      rawCode = rawCode\n        .replace(/^```(?:java)?/, '')  // Supprime ```java\n        .replace(/```$/, '')           // Supprime ```\n        .replace(/\\r/g, '')            // Supprime \\r\n        .trim();                       // Trim les espaces\n    } catch (e) {\n      // S'il y a une erreur inattendue, garde la valeur d'origine\n      rawCode = item.json.content || item.json.data;\n    }\n  } else {\n    // Si ce n’est pas une chaîne, ignore ou met chaîne vide\n    rawCode = '';\n  }\n\n  // Fonction d’échappement\n  const escapeJavaForCypher = (code) => {\n    return code\n      .replace(/\\\\/g, '\\\\\\\\')\n      .replace(/\"/g, '\\\\\"')\n      .replace(/\\n/g, '\\\\n')\n      .replace(/\\r/g, '');\n  };\n\n  const escapedCode = escapeJavaForCypher(rawCode);\n\n  items.push({\n    json: {\n      ...item.json,\n      cleanedCode: escapedCode,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn items;\n"
+        "jsCode": "// Lire la sortie du node 'create batch'\nconst allItems = $items(\"Create Batch+Cypher Query\", 0);\n\n// Supprimer le premier item (la query Cypher)\nconst onlyFiles = allItems.slice(1);\n\n// Retourner uniquement les fichiers (sans la query)\nreturn onlyFiles;\n\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1320,
-        570
+        -510,
+        1110
       ],
-      "id": "1974bce6-5493-4b3c-80dc-eabc7c66a522",
-      "name": "Nettoyage Bad Format"
+      "id": "7493b05f-6565-4c18-b313-cddc3ee753a2",
+      "name": "Return Items Seperated"
+    },
+    {
+      "parameters": {
+        "batchSize": "=1000",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -800,
+        635
+      ],
+      "id": "8a4b5a6a-c398-4806-97e4-d88077bdfb70",
+      "name": "Loop Over Items2"
     },
     {
       "parameters": {
@@ -214,91 +216,19 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -220,
-        420
+        -580,
+        640
       ],
-      "id": "5c90cffb-f975-4374-b6a5-30f8044782d7",
+      "id": "3c7654fb-a255-4e62-bb87-061a3adeb2d7",
       "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "jsCode": "const files = $input.all().map(item => item.json.d);\n\nconst results = [];\n\n// Générer les paires sans doublons et sans auto-paires\nfor (let i = 0; i < files.length; i++) {\n  for (let j = i + 1; j < files.length; j++) {\n    const fileA = files[i];\n    const fileB = files[j];\n\n    results.push({\n      json: {\n        source: {\n          file: fileA.Source,\n          path: fileA.path,\n          section: fileA.section,\n          content: fileA.content\n        },\n        target: {\n          file: fileB.Source,\n          path: fileB.path,\n          section: fileB.section,\n          content: fileB.content\n        }\n      }\n    });\n  }\n}\n\nreturn results;\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -660,
-        420
-      ],
-      "id": "0147b950-a708-4fdb-b275-d4e00134ad1b",
-      "name": "Pairs Sans Doublons"
-    },
-    {
-      "parameters": {
-        "jsCode": "const inputItems = $input.all();\n\nconst outputItems = inputItems.flatMap(item => {\n  const {\n    source,\n    target,\n    source_section,\n    target_section,\n    relationshipType,\n    justification\n  } = item.json;\n\n  return [\n    // Relation normale\n    {\n      json: {\n        source,\n        target,\n        source_section,\n        target_section,\n        relationshipType,\n        justification\n      }\n    },\n    // Relation inversée (duplicate)\n    {\n      json: {\n        source: target,\n        target: source,\n        source_section: target_section,\n        target_section: source_section,\n        relationshipType,\n        justification // tu peux ajouter + ' (inversée)' si tu veux l'indiquer\n      }\n    }\n  ];\n});\n\nreturn outputItems;\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        -150,
-        120
-      ],
-      "id": "54232910-41ba-48a2-89d4-f76b524d4dc9",
-      "name": "Pairs bidirectionnelle"
-    },
-    {
-      "parameters": {
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitInBatches",
-      "typeVersion": 3,
-      "position": [
-        140,
-        120
-      ],
-      "id": "c3cd4713-300b-48c5-b905-30bca419ae93",
-      "name": "Loop Over Items2"
-    },
-    {
-      "parameters": {
-        "resource": "graphDb",
-        "cypherQuery": "=MERGE (src:Graphadatabase {Source: \"{{ $json.source }}\",section: \"{{ $json.source_section }}\"})\nMERGE (tgt:Graphadatabase {Source: \"{{ $json.target }}\",section : \"{{ $json.target_section }}\"})\nMERGE (src)-[rel:`{{ $json.relationshipType }}`]->(tgt)\nON CREATE SET \n  rel.justification = \"{{ $json.justification }}\",\n  rel.source_section = \"{{ $json.source_section }}\",\n  rel.target_section = \"{{ $json.target_section }}\"\nRETURN src.Source, type(rel), tgt.Source"
-      },
-      "type": "n8n-nodes-neo4j.neo4j",
-      "typeVersion": 1,
-      "position": [
-        480,
-        240
-      ],
-      "id": "a2e862da-1330-42e8-811a-e0a8e64bb1a4",
-      "name": "ExecuteQuery graphDb",
-      "credentials": {
-        "neo4jApi": {
-          "id": "XwdiNEDV42io6tPG",
-          "name": "Neo4j account Cloud"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "jsCode": "// Fonction de nettoyage pour Neo4j\nfunction cleanTextForCypher(text) {\n  if (!text) return \"\";\n\n  return text\n    .replace(/\\\\/g, '\\\\\\\\')   // Échapper \\\n    .replace(/\"/g, '\\\\\"')     // Échapper \"\n    .replace(/'/g, \"\\\\'\")     // Échapper '\n    .replace(/\\n/g, ' ')      // Remplacer retour ligne par espace\n    .replace(/\\r/g, ' ')      // Remplacer retour chariot\n    .replace(/\\t/g, ' ')      // Remplacer tabulation\n    .replace(/[\\x00-\\x1F\\x7F]/g, '') // Supprimer caractères de contrôle\n    .replace(/\\s+/g, ' ')     // Réduire les espaces multiples\n    .trim();\n}\n\n// Entrée\nconst raw = $input.first().json.output || \"\";\n\n// Nettoyage brut des balises Markdown (```json ou ```)\nconst cleaned = raw.replace(/```json|```/g, '').trim();\n\nlet parsed;\ntry {\n  parsed = JSON.parse(cleaned);\n} catch (err) {\n  throw new Error('Erreur de parsing du JSON dans le champ \"output\" : ' + err.message);\n}\n\n// Nettoyage de la justification\nconst cleanedJustification = cleanTextForCypher(parsed.justification);\n\n// Construction du résultat\nreturn [\n  {\n    json: {\n      source: parsed.source,\n      target: parsed.target,\n      source_section: parsed.source_section,\n      target_section: parsed.target_section,\n      relationshipType: parsed.type,\n      justification: cleanedJustification,\n      extractedAt: new Date().toISOString()\n    }\n  }\n];\n"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        140,
-        445
-      ],
-      "id": "f71ee9b2-feef-4359-b15b-f314220321f7",
-      "name": "Extract + Nettoyage Justification"
     },
     {
       "parameters": {
         "model": {
           "__rl": true,
-          "value": "gpt-4.1-mini",
+          "value": "gpt-4o-mini",
           "mode": "list",
-          "cachedResultName": "gpt-4.1-mini"
+          "cachedResultName": "gpt-4o-mini"
         },
         "options": {
           "temperature": 0
@@ -307,15 +237,128 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -140,
-        640
+        -600,
+        840
       ],
-      "id": "78b6ab0f-1460-42c8-ac0b-ecb5ab75113e",
+      "id": "dc1eba0f-2ef1-4ba7-8791-66418d0e6a10",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
           "id": "rKtHTy7g6jG36Xzd",
           "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "batchSize": 5000,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -510,
+        335
+      ],
+      "id": "fb1fd989-926c-43fc-abf4-04f35ba23c17",
+      "name": "Loop Over Items3"
+    },
+    {
+      "parameters": {
+        "jsCode": "const batchItems = $input.all();\n\nconsole.log(`Génération requête pour batch de ${batchItems.length} items`);\n\nfunction escapeCypher(value) {\n  if (!value || typeof value !== 'string') return '';\n  \n  return value\n    .replace(/\\\\/g, '\\\\\\\\')\n    .replace(/\"/g, '\\\\\"')\n    .replace(/'/g, \"\\\\'\")\n    .replace(/\\n/g, '\\\\n')\n    .replace(/\\r/g, '')\n    .replace(/\\t/g, '\\\\t')\n    .substring(0, 8000);\n}\n\nconst mergeStatements = [];\n\nfor (let i = 0; i < batchItems.length; i++) {\n  const item = batchItems[i];\n\n  try {\n    if (!item.json.file_name || !item.json.PATH) {\n      console.warn(`Item ${i} ignoré: champs manquants`);\n      continue;\n    }\n\n    const fileName = escapeCypher(item.json.file_name);\n    const path = escapeCypher(item.json.PATH);\n    const content = escapeCypher(item.json.content);\n    const section = escapeCypher(item.json.section || '');\n    const extractedAt = item.json.extractedAT || new Date().toISOString();\n\n    const mergeStatement = `\nMERGE (d${i}:TestGraph1 {Source: \"${fileName}\", path: \"${path}\"}) \nON CREATE SET   \n  d${i}.content = \"${content}\",\n  d${i}.section = \"${section}\",\n  d${i}.extractedAt = \"${extractedAt}\",\n  d${i}.path = \"${path}\"\nON MATCH SET\n  d${i}.content = \"${content}\",\n  d${i}.section = \"${section}\",\n  d${i}.extractedAt = \"${extractedAt}\"`;\n\n    mergeStatements.push(mergeStatement);\n  } catch (error) {\n    console.error(`Erreur item ${i}:`, error.message);\n  }\n}\n\nconst cypherQuery = mergeStatements.join('\\n') +\n  `\\nRETURN ${mergeStatements.map((_, i) => `d${i}.Source as source${i}`).join(', ')}`;\n\nconsole.log(`Requête générée avec ${mergeStatements.length} MERGE statements`);\n\n// Sortie 1 : la requête Cypher\nconst queryOutput = {\n  json: {\n    cypherQuery,\n    batchSize: mergeStatements.length,\n    processedAt: new Date().toISOString()\n  }\n};\n\n// Sortie 2..n : les items originaux\nconst originalItemsOutput = batchItems;\n\nreturn [queryOutput, ...originalItemsOutput];\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1020,
+        1035
+      ],
+      "id": "9b0a228b-e4c9-4003-8f93-43af537dd3d7",
+      "name": "Create Batch+Cypher Query"
+    },
+    {
+      "parameters": {
+        "jsCode": "const batchItems = $input.all();\nconsole.log(`Génération requête pour batch de ${batchItems.length} relations`);\n\nfunction escapeCypher(value) {\n  if (!value || typeof value !== 'string') return '';\n  \n  return value\n    .replace(/\\\\/g, '\\\\\\\\')\n    .replace(/\"/g, '\\\\\"')\n    .replace(/'/g, \"\\\\'\")\n    .replace(/\\n/g, '\\\\n')\n    .replace(/\\r/g, '')\n    .replace(/\\t/g, '\\\\t')\n    .substring(0, 8000);\n}\n\nconst mergeStatements = [];\nfor (let i = 0; i < batchItems.length; i++) {\n  const item = batchItems[i];\n  try {\n    // Vérification des champs requis\n    if (!item.json.source || !item.json.target || !item.json.relationshipType) {\n      console.warn(`Relation ${i} ignorée: champs manquants`);\n      continue;\n    }\n\n    // Échappement des valeurs\n    const source = escapeCypher(item.json.source);\n    const target = escapeCypher(item.json.target);\n    const sourceSection = escapeCypher(item.json.source_section || '');\n    const targetSection = escapeCypher(item.json.target_section || '');\n    const relationshipType = escapeCypher(item.json.relationshipType);\n    const justification = escapeCypher(item.json.justification || '');\n    const extractedAt = item.json.extractedAt || new Date().toISOString();\n\n    const mergeStatement = `\nMERGE (src${i}:TestGraph1 {Source: \"${source}\", section: \"${sourceSection}\"})\nMERGE (tgt${i}:TestGraph1 {Source: \"${target}\", section: \"${targetSection}\"})\nMERGE (src${i})-[rel${i}:\\`${relationshipType}\\`]->(tgt${i})\nON CREATE SET \n  rel${i}.justification = \"${justification}\",\n  rel${i}.source_section = \"${sourceSection}\",\n  rel${i}.target_section = \"${targetSection}\",\n  rel${i}.extractedAt = \"${extractedAt}\"\nON MATCH SET\n  rel${i}.justification = \"${justification}\",\n  rel${i}.extractedAt = \"${extractedAt}\"`;\n\n    mergeStatements.push(mergeStatement);\n  } catch (error) {\n    console.error(`Erreur relation ${i}:`, error.message);\n  }\n}\n\n// Construction de la requête finale avec RETURN\nconst cypherQuery = mergeStatements.join('\\n') +\n  `\\nRETURN ${mergeStatements.map((_, i) => `src${i}.Source as source${i}, type(rel${i}) as relType${i}, tgt${i}.Source as target${i}`).join(', ')}`;\n\nconsole.log(`Requête générée avec ${mergeStatements.length} relations MERGE statements`);\n\n// Sortie 1 : la requête Cypher\nconst queryOutput = {\n  json: {\n    cypherQuery,\n    batchSize: mergeStatements.length,\n    processedAt: new Date().toISOString(),\n    totalRelations: batchItems.length\n  }\n};\n\n// Sortie 2..n : les items originaux (relations)\n\n\nreturn queryOutput;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        260
+      ],
+      "id": "78c85cff-1c57-4e2a-9030-19e8d1f4e9dc",
+      "name": "Create Cypher Query"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Fonction de nettoyage pour Neo4j\nfunction cleanTextForCypher(text) {\n  if (!text) return \"\";\n  return text\n    .replace(/\\\\/g, '\\\\\\\\')   // Échapper \\\n    .replace(/\"/g, '\\\\\"')     // Échapper \"\n    .replace(/'/g, \"\\\\'\")     // Échapper '\n    .replace(/\\n/g, ' ')      // Remplacer retour ligne par espace\n    .replace(/\\r/g, ' ')      // Remplacer retour chariot\n    .replace(/\\t/g, ' ')      // Remplacer tabulation\n    .replace(/[\\x00-\\x1F\\x7F]/g, '') // Supprimer caractères de contrôle\n    .replace(/\\s+/g, ' ')     // Réduire les espaces multiples\n    .trim();\n}\n\n// Fonction pour traiter un seul item\nfunction processItem(item, index) {\n  try {\n    // Extraction de la sortie brute\n    const raw = item.json.output || \"\";\n    \n    // Nettoyage brut des balises Markdown (```json ou ```)\n    const cleaned = raw.replace(/```json|```/g, '').trim();\n    \n    // Parsing JSON\n    const parsed = JSON.parse(cleaned);\n    \n    // Nettoyage de la justification\n    const cleanedJustification = cleanTextForCypher(parsed.justification);\n    \n    // Construction du résultat pour cet item\n    return {\n      json: {\n        source: parsed.source,\n        target: parsed.target,\n        source_section: parsed.source_section,\n        target_section: parsed.target_section,\n        relationshipType: parsed.type,\n        justification: cleanedJustification,\n        extractedAt: new Date().toISOString(),\n        batchIndex: index // Optionnel : pour tracer l'ordre\n      }\n    };\n    \n  } catch (err) {\n    // En cas d'erreur, retourner un objet d'erreur\n    return {\n      json: {\n        error: true,\n        errorMessage: `Erreur item ${index}: ${err.message}`,\n        originalOutput: item.json.output,\n        extractedAt: new Date().toISOString(),\n        batchIndex: index\n      }\n    };\n  }\n}\n\n// Traitement de tous les items\nconst allItems = $input.all(); // Récupère TOUS les items du batch\nconst results = [];\n\n// Boucle sur chaque item\nfor (let i = 0; i < allItems.length; i++) {\n  const processedItem = processItem(allItems[i], i);\n  results.push(processedItem);\n}\n\n// Log pour debug (optionnel)\nconsole.log(`Traité ${results.length} items sur ${allItems.length} reçus`);\n\n// Retourner tous les résultats\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -220,
+        640
+      ],
+      "id": "1f7b5b0e-cd4b-421d-b4cd-8d9d900294c3",
+      "name": "Extract + Clean Justification"
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = [];\n\nfor (const item of $input.all()) {\n  // Essayez d'abord content, sinon data\n  let rawCode = item.json.content || item.json.data;\n\n  // Vérifie que rawCode est une chaîne\n  if (typeof rawCode === 'string') {\n    try {\n      rawCode = rawCode\n        .replace(/^```(?:java)?/, '')  // Supprime ```java\n        .replace(/```$/, '')           // Supprime ```\n        .replace(/\\r/g, '')            // Supprime \\r\n        .trim();                       // Trim les espaces\n    } catch (e) {\n      // S'il y a une erreur inattendue, garde la valeur d'origine\n      rawCode = item.json.content || item.json.data;\n    }\n  } else {\n    // Si ce n’est pas une chaîne, ignore ou met chaîne vide\n    rawCode = '';\n  }\n\n  // Fonction d’échappement\n  const escapeJavaForCypher = (code) => {\n    return code\n      .replace(/\\\\/g, '\\\\\\\\')\n      .replace(/\"/g, '\\\\\"')\n      .replace(/\\n/g, '\\\\n')\n      .replace(/\\r/g, '');\n  };\n\n  const escapedCode = escapeJavaForCypher(rawCode);\n\n  items.push({\n    json: {\n      ...item.json,\n      cleanedCode: escapedCode,\n      extractedAt: new Date().toISOString()\n    }\n  });\n}\n\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1680,
+        1035
+      ],
+      "id": "d8864ec2-347a-4430-9ca7-84e19e89cbc7",
+      "name": "Bad Format Cleanup"
+    },
+    {
+      "parameters": {
+        "batchSize": 10000,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        -1020,
+        785
+      ],
+      "id": "994a1bb8-d280-4e57-8d52-33c32e4898b4",
+      "name": "Loop Over Items1"
+    },
+    {
+      "parameters": {
+        "jsCode": "const allFiles = $input.all().map(item => item.json);\nconst totalFiles = allFiles.length;\nconst maxPairsLimit = 50000; // Limite pour éviter surcharge mémoire\n\nconsole.log(`Génération optimisée pour ${totalFiles} fichiers (limite: ${maxPairsLimit})`);\n\nconst results = [];\nlet totalPairsGenerated = 0;\nconst totalPossiblePairs = totalFiles * (totalFiles - 1) / 2;\n\n// Si trop de paires possibles, utiliser échantillonnage\nconst useRandomSampling = totalPossiblePairs > maxPairsLimit;\nconst samplingRate = useRandomSampling ? maxPairsLimit / totalPossiblePairs : 1;\n\nconsole.log(`Mode: ${useRandomSampling ? 'Échantillonnage' : 'Complet'} (taux: ${samplingRate.toFixed(4)})`);\n\nfor (let i = 0; i < totalFiles - 1 && totalPairsGenerated < maxPairsLimit; i++) {\n  const currentFile = allFiles[i];\n  \n  for (let j = i + 1; j < totalFiles && totalPairsGenerated < maxPairsLimit; j++) {\n    const targetFile = allFiles[j];\n    \n    // Échantillonnage aléatoire si nécessaire\n    if (!useRandomSampling || Math.random() < samplingRate) {\n      results.push({\n        json: {\n          source: {\n            file: currentFile.file_name || currentFile.Source,\n            path: currentFile.PATH || currentFile.path,\n            section: currentFile.section,\n            content: currentFile.content\n          },\n          target: {\n            file: targetFile.file_name || targetFile.Source,\n            path: targetFile.PATH || targetFile.path,\n            section: targetFile.section,\n            content: targetFile.content\n          },\n          pairIndex: `${i + 1}-${j + 1}`,\n          sampled: useRandomSampling\n        }\n      });\n      \n      totalPairsGenerated++;\n    }\n  }\n  \n  // Log de progression\n  if (i % 10 === 0) {\n    console.log(`Itération ${i + 1}/${totalFiles - 1}: ${totalPairsGenerated} paires générées`);\n  }\n}\n\nconsole.log(`TERMINÉ: ${totalPairsGenerated} paires sur ${totalPossiblePairs} possibles`);\nreturn results;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -800,
+        840
+      ],
+      "id": "a40faa12-218f-4aef-bd0c-76a47a91ad5f",
+      "name": "Creating Relationships"
+    },
+    {
+      "parameters": {
+        "resource": "graphDb",
+        "cypherQuery": "={{ $json.cypherQuery }}"
+      },
+      "type": "n8n-nodes-neo4j.neo4j",
+      "typeVersion": 1,
+      "position": [
+        0,
+        340
+      ],
+      "id": "f1e74242-ff47-409d-90ac-dce3e7a9dc3c",
+      "name": "Create Relationships NEO4J",
+      "credentials": {
+        "neo4jApi": {
+          "id": "XwdiNEDV42io6tPG",
+          "name": "Neo4j account Cloud"
         }
       }
     }
@@ -359,14 +402,14 @@
       "main": [
         [
           {
-            "node": "Pairs Sans Doublons",
+            "node": "Loop Over Items1",
             "type": "main",
             "index": 0
           }
         ],
         [
           {
-            "node": "Create Database",
+            "node": "Create Batch+Cypher Query",
             "type": "main",
             "index": 0
           }
@@ -399,7 +442,7 @@
       "main": [
         [
           {
-            "node": "Nettoyage Bad Format",
+            "node": "Bad Format Cleanup",
             "type": "main",
             "index": 0
           }
@@ -417,11 +460,33 @@
         ]
       ]
     },
-    "Loop Over Items1": {
+    "Create Database": {
       "main": [
         [
           {
-            "node": "Pairs bidirectionnelle",
+            "node": "Return Items Seperated",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Return Items Seperated": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items2": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
             "type": "main",
             "index": 0
           }
@@ -435,89 +500,11 @@
         ]
       ]
     },
-    "Create Database": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Nettoyage Bad Format": {
-      "main": [
-        [
-          {
-            "node": "Edit Fields",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "AI Agent": {
       "main": [
         [
           {
-            "node": "Extract + Nettoyage Justification",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Pairs Sans Doublons": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Pairs bidirectionnelle": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Loop Over Items2": {
-      "main": [
-        [],
-        [
-          {
-            "node": "ExecuteQuery graphDb",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "ExecuteQuery graphDb": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Extract + Nettoyage Justification": {
-      "main": [
-        [
-          {
-            "node": "Loop Over Items1",
+            "node": "Extract + Clean Justification",
             "type": "main",
             "index": 0
           }
@@ -534,17 +521,112 @@
           }
         ]
       ]
+    },
+    "Loop Over Items3": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Create Cypher Query",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Batch+Cypher Query": {
+      "main": [
+        [
+          {
+            "node": "Create Database",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Cypher Query": {
+      "main": [
+        [
+          {
+            "node": "Create Relationships NEO4J",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract + Clean Justification": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bad Format Cleanup": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items1": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Creating Relationships",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Creating Relationships": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Relationships NEO4J": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "c9c30485-63de-4690-92ae-4c2b60710237",
+  "versionId": "4ac79af0-9788-4875-b057-182138f408b5",
   "meta": {
-    "templateCredsSetupCompleted": true,
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
   },
-  "id": "T1KCz5f2QZE1Gnk3",
+  "id": "1ms7aywFsDefNc5S",
   "tags": []
 }

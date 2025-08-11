@@ -1,5 +1,5 @@
 {
-  "name": "Graph RAG AGENT new resource JAVA,MD",
+  "name": "Graph Rag Agent Version finale",
   "nodes": [
     {
       "parameters": {
@@ -8,64 +8,47 @@
       "type": "@n8n/n8n-nodes-langchain.chatTrigger",
       "typeVersion": 1.1,
       "position": [
-        -540,
-        40
+        -40,
+        -120
       ],
-      "id": "526bedba-f394-4bff-b965-63cb9bcbd37c",
+      "id": "fe096eef-e75a-4551-817e-7ebafb67c2b1",
       "name": "When chat message received",
       "webhookId": "82f68b75-ecef-408a-86a2-d55fb101d7b5"
     },
     {
       "parameters": {
         "promptType": "define",
-        "text": "=Find relevant information in the graph database related to the topic of {{ $json.chatInput }}, using Java source files, Markdown documentation, and their interconnections.\n\nUsing only the results returned by Tool Neo4j, generate:\n\n- A synthesized and reasoned answer using one or multiple files, depending on the complexity of the query,\n- If multiple files are used: identify each file and the documentation used, the type of relationship (e.g., documente, complémentaire, différente), and the justification for using cross-document reasoning,\n- Metadata for each source (file name, section, extractedAt, and a short snippet of content).\n\n✅ Use **only one document** when it is clearly sufficient.\n✅ Use **multiple documents** only when necessary for accurate or complete reasoning.\n⚠️ Respond in the same language as the user query (French if the query is in French, English if in English).",
+        "text": "=Search the graph database for relevant information related to {{ $json.chatInput }}, using interconnected Java source files and Markdown documentation.\nBased only on the results from the Neo4j Tool, generate a precise, enriched, and well-developed answer that includes:\n🎯 Deep Technical Explanation\n- Provide a clear and thorough explanation using multiple files (cross-document reasoning),\n- Go beyond synthesis: explain how concepts are implemented, documented, and interrelated,\n- Highlight technical nuances, design decisions, or architectural patterns when relevant.\n📁 Individual File Details\n- For each file used, include:\n- file name,\n- section (source folder),\n- path,\n- A short content snippet.\n📚 Final Summary Section\nAt the end of the response, include a single merged section titled:\n- \"Used Documents\" if the query is in English,\n- \"Documents utilisés\" if the query is in French.\nThis section should:\n- List all files used,\n- Briefly summarize the relationships between them (without excessive detail),\n- Mention the most relevant relationship types  and their purpose in the reasoning.\n⚠️ Prioritize documente and complémentaire relationships. Use différente only when necessary for contrast. ⚠️ Avoid listing relationships multiple times—summarize them once in the final section. ⚠️ Respond in the same language as the user query\n",
         "options": {
-          "systemMessage": "=You are a Graph RAG AI agent specialized in analyzing Java source files and their related Markdown documentation, stored in a Neo4j knowledge graph.\n\nYour main tool is the Neo4j database (Tool Neo4j), which you must query to extract relevant files and their semantic relationships.\n\nEach file is stored as a node with properties: `file`, `content`, `section`, `path`, and `extractedAt`. Nodes are connected by semantic relationships like:\n- `documente` (documentation for a code file),\n- `complémentaire` (conceptually or technically related),\n- `différente` (different domain or purpose).\n\nYour tasks:\n1. Query the graph via Tool Neo4j to retrieve nodes and relationships relevant to the user's topic.\n2. Build your answer only from the graph data (never hallucinate).\n3. Prioritize relationships of type **documente** and **complémentaire** for reasoning.\n4. Use **cross-document reasoning only when strictly necessary** to clarify or complete the answer. If one document is sufficient, do not invoke others.\n5. If using multiple files, clearly indicate why each is needed and how they relate.\n6. Include **différente** relationships only for contrast and clearly mark them.\n\nYour final output must include:\n- A synthesized explanation based on actual graph data,\n- Metadata for each source (file, section, path)\n- If using multiple documents: the relationship type and its justification.\n\nNever invent information. Always justify reasoning using the `justification` property from the relationships in Neo4j."
+          "systemMessage": "=You are a Graph RAG AI agent specialized in analyzing Java source files and their related Markdown documentation, stored in a Neo4j knowledge graph.\nYour primary tool is the Neo4j database, which you query to extract relevant files and semantic relationships.\nEach file is represented as a node with:\n- file: name of the file,\n- content: textual content,\n- section: source folder,\n- path: file location.\nNodes are connected by semantic relationships if there are excited:\n- documente: documentation that explains or describes a code file,\n- complementary: files that are conceptually or technically related,\n- different: files from distinct domains or purposes.\n- depends_on\n- uses\n- associated\nYour responsibilities:\n- Query Neo4j to retrieve relevant nodes and relationships.\n- Build your response strictly from graph data (never hallucinate).\n- Prioritize documente and complémentaire relationships for reasoning.\n- Use différente relationships only when needed to contrast ideas, and clearly mark them.\n- Provide a deep and enriched explanation, not just a synthesis.\n- Present metadata for each file (file, section, path, snippet).\n- At the end of the response, include a single merged summary section:\n- Titled \"Used Documents\" or \"Documents utilisés\" depending on the query language,\n- Summarize the files used and their relationships concisely,\n- Avoid repeating relationship details throughout the answer.\n"
         }
       },
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -280,
-        40
+        220,
+        -140
       ],
-      "id": "46c167a7-7a70-4b00-ae1a-ab7a8c8d3dbb",
+      "id": "c565a2cb-0ea4-4c5d-919f-51905cd0aa8f",
       "name": "AI Agent"
     },
     {
       "parameters": {
         "resource": "graphDb",
-        "cypherQuery": "=MATCH (n:JavaTestgraph1) OPTIONAL MATCH (n)-[r]->(m) OPTIONAL MATCH (m)-[r2]->(n) RETURN n, r, m, r2"
+        "cypherQuery": "MATCH (n:GraphadatabaseOPENAI) OPTIONAL MATCH (n)-[r]->(m) RETURN n, r, m LIMIT 200;"
       },
       "type": "n8n-nodes-neo4j.neo4jTool",
       "typeVersion": 1,
       "position": [
-        -40,
-        240
+        420,
+        100
       ],
-      "id": "0804e0f2-6a62-4241-8814-34a0f4ca2eaa",
+      "id": "5776163d-b0df-4d2a-966f-02c3f81b4d10",
       "name": "ExecuteQuery graphDb in Neo4j",
       "credentials": {
         "neo4jApi": {
           "id": "XwdiNEDV42io6tPG",
           "name": "Neo4j account Cloud"
-        }
-      }
-    },
-    {
-      "parameters": {},
-      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
-      "typeVersion": 1.3,
-      "position": [
-        -200,
-        260
-      ],
-      "id": "513cc4c3-2e19-4fb4-8058-862145609e1f",
-      "name": "Postgres Chat Memory",
-      "credentials": {
-        "postgres": {
-          "id": "n8LaHccthse0BiXp",
-          "name": "Postgres account"
         }
       }
     },
@@ -83,15 +66,32 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -460,
-        280
+        180,
+        100
       ],
-      "id": "91e4cc51-bd76-4aaa-8515-36e219b5b529",
+      "id": "ee89d5d5-c7bd-4461-86f1-03c458fab0a5",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
           "id": "adbeya8JlzChQ2dk",
           "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        300,
+        100
+      ],
+      "id": "9489da44-a1de-45e9-87ae-66ccbb849e0e",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "n8LaHccthse0BiXp",
+          "name": "Postgres account"
         }
       }
     }
@@ -120,17 +120,6 @@
         ]
       ]
     },
-    "Postgres Chat Memory": {
-      "ai_memory": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_memory",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "OpenAI Chat Model": {
       "ai_languageModel": [
         [
@@ -141,19 +130,28 @@
           }
         ]
       ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": false,
   "settings": {
-    "executionOrder": "v1",
-    "callerPolicy": "workflowsFromSameOwner",
-    "timeSavedPerExecution": 0
+    "executionOrder": "v1"
   },
-  "versionId": "c11bf733-c186-4684-a666-7b88cfed676f",
+  "versionId": "4ed7379f-ebd4-46aa-938f-ce71cbafb100",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
   },
-  "id": "op0QAHXHV81ltKjU",
+  "id": "bbr5R97DpzM8E8Wn",
   "tags": []
 }
