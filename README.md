@@ -1,106 +1,81 @@
-# 📚 Graph RAG Agent avec n8n, Neo4j & Java/Markdown
+# 📂 Workflow Branch – Multi-Projects with n8n, Docker & Documentation
 
-Ce projet présente un système complet de **Graph Retrieval-Augmented Generation (Graph RAG)** basé sur :
-- Des fichiers source Java et Markdown.
-- Une base de graphes Neo4j hébergée dans le cloud.
-- Une orchestration via n8n en mode self-hosted.
-- Un agent conversationnel connecté à une base de graphes et une mémoire Postgres.
+Cette branche contient plusieurs projets **n8n** organisés par dossiers, chacun prêt à être déployé via **Docker** et à importer ses propres workflows.
+
+Chaque projet inclut :  
+- Fichiers JSON à importer dans n8n  
+- Documentation PDF détaillant le processus et la configuration  
+- Ressources spécifiques (code source, données, etc.)
+
+---
 
 ## 📁 Structure du dépôt
-Workflows/
-└── 📂 Graph RAG
-    ├── 📄 Graph Database Resources_JAVA+MD.json
-    │   └── 🔧 Workflow 1 : Ingestion des ressources Java & Markdown avec leur relations dans Neo4j
-    ├── 📄 Graph RAG AGENT new resource JAVA,MD.json
-    │   └── 🤖 Workflow 2 : Agent Graph RAG conversationnel interrogeant Neo4j
-    ├── 📄 documentation.pdf
-    │   └── 📘 Guide complet du système avec illustrations et explications détaillées
-    └── 📂 resource/
-        ├── 🔤 *.java
-        ├── 📝 *.md / *.markdown
-        └── 📂 (Sous-dossiers facultatifs selon la structure des ressources)
+
+Workflow/
+├── 📂 Project_1_Name/
+│ ├── 📄 workflow1.json # Workflow principal à importer
+│ ├── 📄 workflow2.json # Workflow secondaire ou complémentaire
+│ ├── 📄 documentation.pdf # Guide complet avec étapes + captures d'écran
+│ └── 📂 resources/ # Ressources spécifiques (Java, Markdown, CSV, etc.)
+│
+├── 📂 Project_2_Name/
+│ ├── 📄 workflow_main.json
+│ ├── 📄 workflow_extra.json
+│ ├── 📄 documentation.pdf
+│ └── 📂 resources/
+│
+└── 📂 Project_3_Name/
+├── 📄 ...
 
 ## 🚀 Objectif
 
-Créer une base de connaissances intelligente en graphes en indexant du code source Java et sa documentation, puis interagir avec un agent IA capable de raisonner sur les relations entre fichiers, tout en justifiant les réponses.
-
-## 🧰 Technologies
-
-- [n8n](https://n8n.io/) (self-hosted avec Docker)
-- [Neo4j AuraDB](https://console.neo4j.io/)
-- OpenAI / Gemini (IA)
-- Postgres (mémoire conversationnelle)
-- LangChain (agent Graph RAG)
-
-## ⚙️ Installation
-
-### Prérequis
-
-- Docker Desktop installé
-- ~7 Go d’espace disque
-- Compte Neo4j AuraDB
-- Clé API OpenAI ou Gemini
-- Clé API Google AI Studio si Gemini utilisé
-
-### Étapes
-
-1. Cloner le dépôt n8n :
-    ```bash
-    git clone https://github.com/n8n-io/self-hosted-ai-starter-kit.git
-    cd self-hosted-ai-starter-kit
-    copy .env.example .env
-    docker-compose --profile cpu up
-    ```
-
-2. Copier les fichiers Java/Markdown dans :
-    ```
-    self-hosted-ai-starter-kit/data/shared/resource/
-    ```
-
-3. Importer les workflows via l'interface n8n :
-    - http://localhost:5678
-    - Menu Workflows → Import from file
-
-## 🧠 Workflows
-
-### 1️⃣ `Graph Database Resources_JAVA+MD.json`
-
-> 📌 Ingestion et structuration de fichiers en base de graphes Neo4j
-
-- Lit tous les fichiers `.java`, `.md`, `.markdown`
-- Extrait, nettoie, et enrichit les métadonnées
-- Crée les nœuds + relations sémantiques avec un agent IA
-- Insertions via requêtes Cypher
-
-### 2️⃣ `Graph RAG AGENT new resource JAVA,MD.json`
-
-> 🤖 Agent conversationnel Graph RAG basé sur les données Neo4j
-
-- Reçoit des questions via chat
-- Utilise une IA + base Neo4j pour répondre
-- Justifie chaque réponse avec relation + métadonnées + contenu
-
-## 🔍 Test du système
-
-> Une fois les deux workflows importés et exécutés :
-
-- Accéder à l'interface n8n
-- Envoyer des requêtes : *"Quel fichier documente tel autre fichier ?"*, *"Quelle est la relation entre A.java et B.md ?"*
-
-## ✨ Résultat
-
-- Réponses contextualisées
-- Analyse multi-document sans hallucination
-- Justifications transparentes et traçabilité complète
-
-## 📄 Documentation
-
-Le guide complet est disponible dans [`documentation.pdf`](./documentation.pdf) — il contient les captures d’écran, configurations détaillées des nœuds et procédures spécifiques.
-
-## 📌 Auteur
-
-👤 **Ahmed Aziz Ammar**
-
-Passionné par les architectures modulaires, l’orchestration low-code, et l’IA connectée à des bases sémantiques.
+Centraliser plusieurs projets **n8n** autonomes dans une seule branche, chacun avec :  
+- Son environnement Docker dédié  
+- Ses workflows configurés et prêts à l’emploi  
+- Sa documentation complète
 
 ---
+
+## 🧰 Technologies utilisées
+
+- [n8n](https://n8n.io/) (self-hosted avec Docker)  
+- [Neo4j AuraDB](https://console.neo4j.io/) (pour stockage en graphes, si applicable)  
+- PostgreSQL (mémoire conversationnelle, si applicable)  
+- OpenAI / Gemini API (pour l’IA)  
+- LangChain (pour agents RAG, si applicable)
+
+---
+
+## ⚙️ Installation d’un projet
+
+### 1️⃣ Prérequis
+- Docker Desktop installé  
+- 7 Go d’espace disque minimum  
+- Clés API nécessaires (OpenAI, Gemini, Neo4j, etc. selon projet)  
+
+### 2️⃣ Étapes
+1. Cloner le dépôt et naviguer dans le dossier du projet choisi :  
+   git clone https://github.com/username/repo.git
+   cd Workflow/Project_1_Name
+2. Lancer l’environnement n8n :
+
+    copy .env.example .env
+    docker-compose --profile cpu up
+3. Accéder à n8n via :
+    http://localhost:5678
+4. Importer les fichiers .json depuis le menu Workflows → Import from file
+
+# 📜 Documentation
+# Pour chaque projet, consulte le fichier documentation.pdf :
+
+1. Processus détaillé (étapes d’exécution)
+
+2. Configuration des nœuds
+
+3. Paramètres spécifiques (API, connexions)
+
+4. Astuces d’optimisation
+
+# 📌 Auteur
+## 👤 Ahmed Aziz Ammar
+Passionné par les architectures modulaires, l’automatisation low-code, et l’IA connectée à des bases de connaissances.
