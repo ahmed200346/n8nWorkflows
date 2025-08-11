@@ -55,8 +55,12 @@ Centraliser plusieurs projets **n8n** autonomes dans une seule branche, chacun a
 
 ### 2️⃣ Étapes
 1. Cloner le dépôt et naviguer dans le dossier du projet choisi :  
-   git clone https://github.com/username/repo.git
-   cd Workflow/Project_1_Name
+   1. git clone https://github.com/ahmed200346/n8nWorkflows.git
+   2. cd n8nWorkflows
+   3. git fetch --all
+   4. git branch -a
+   5. git checkout -b Workflows origin/Workflows
+
 2. Lancer l’environnement n8n :
 
     copy .env.example .env
