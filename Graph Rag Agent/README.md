@@ -16,10 +16,19 @@ Workflows/
     │   └── 🤖 Workflow 2: Graph RAG conversational agent querying Neo4j  
     ├── 📄 documentation.pdf  
     │   └── 📘 Complete system guide with illustrations and detailed explanations  
-    └── 📂 resource/  
-        ├── 🔤 *.java  
-        ├── 📝 *.md / *.markdown  
-        └── 📂 (Optional subfolders depending on resource structure)
+    ├── 📂 resource/  
+    │   ├── 🔤 *.java  
+    │   ├── 📝 *.md / *.markdown  
+    │   └── 📂 (Optional subfolders depending on resource structure)  
+    └── 📂 Capture of Results  
+        ├── 📂 NEO4J  
+        │   └── 🖼️ Example captures of nodes and relationships created in Neo4j based on resources in the `resource/` folder  
+        ├── 📂 Response From Different Projects  
+        │   ├── 📄 README.md → Example prompts using resources from *different projects* with their responses  
+        │   └── 🖼️ Captures of query results and AI responses  
+        └── 📂 Response From Same Project  
+            ├── 📄 README.md → Example of a prompt and its response using resources from the *same project*  
+            └── 🖼️ Captures of query results and explanations
 
 ## 🚀 Purpose
 
@@ -92,7 +101,12 @@ Build an intelligent graph-based knowledge base by indexing Java source code and
 
 - Contextualized responses  
 - Multi-document analysis without hallucination  
-- Transparent justifications and full traceability
+- Transparent justifications and full traceability  
+
+Additionally, check the **Capture of Results** folder for:  
+- Neo4j graph screenshots of nodes and relationships  
+- Example prompts and responses across different projects  
+- Example prompts and responses within the same project  
 
 ## 📄 Documentation
 
@@ -100,4 +114,4 @@ The complete guide is available in [`documentation.pdf`](./documentation.pdf) �
 
 ## 📌 Author
 
-👤 **Ahmed Aziz Ammar**  
+👤 **Ahmed Aziz Ammar**
