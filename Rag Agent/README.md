@@ -18,10 +18,13 @@ Workflows/
         ├── 📄 *.pdf  
         ├── 🔤 *.java  
         ├── 📝 *.md / *.markdown  
-        └── 📂 (Optional subfolders depending on resource structure)
+└── 📂 Capture of Results
+    ├── 📂 Response From Same Project
+    │   └── 🧪 Contains prompt examples using resources from a single project
+    └── 📂 Response From Different Projects
+        └── 🧪 Contains prompt examples using resources from multiple projects
 
 ---
-
 ## 🚀 Purpose
 
 Build an enriched vector database from structured files, then use it via an AI agent for **contextual, accurate, and traceable** search.
@@ -83,6 +86,19 @@ Example queries:
 - 🖼️ Screenshots
 - 🧩 Node configuration
 - 🛠️ Step-by-step installation
+
+## 📸 Capture of Results
+
+
+To illustrate how the RAG agent performs across different resource contexts, this repository includes this folder :
+Workflows/
+└── 📂 Capture of Results
+    ├── 📂 Response From Same Project
+    │   └── 🧪 Contains prompt examples using resources from a single project
+    └── 📂 Response From Different Projects
+        └── 🧪 Contains prompt examples using resources from multiple projects
+
+These subfolders showcase how the agent responds when provided with different scopes of input data. Each example demonstrates the system’s ability to generate contextualized answers based on either isolated or cross-project knowledge.
 
 📌 Author
 👤 Ahmed Aziz Ammar
