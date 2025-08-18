@@ -1,31 +1,29 @@
 {
-  "name": "My workflow",
+  "name": "My workflow 8",
   "nodes": [
     {
       "parameters": {},
       "type": "n8n-nodes-base.manualTrigger",
       "typeVersion": 1,
       "position": [
-        -3000,
-        1035
+        -2780,
+        780
       ],
-      "id": "8858ce0c-0b47-4052-b0eb-db6d25900d5a",
+      "id": "6d83c533-bd14-486a-8b84-342b6e04bab0",
       "name": "When clicking ‘Execute workflow’"
     },
     {
       "parameters": {
         "fileSelector": "/data/shared/Documents/**/*.{java,md}",
-        "options": {
-          "fileExtension": ""
-        }
+        "options": {}
       },
       "type": "n8n-nodes-base.readWriteFile",
       "typeVersion": 1,
       "position": [
-        -2780,
-        1035
+        -2560,
+        780
       ],
-      "id": "dcd0acfe-a660-4c04-a769-ea3ff74877b9",
+      "id": "1919e02e-a370-4bf7-8be7-3293f501e93d",
       "name": "Read/Write Files from Disk"
     },
     {
@@ -36,10 +34,10 @@
       "type": "n8n-nodes-base.extractFromFile",
       "typeVersion": 1,
       "position": [
-        -2560,
-        1035
+        -2340,
+        780
       ],
-      "id": "a3d93b2f-3a59-4bc6-9386-10a11bcfaa5e",
+      "id": "29dba2c6-08f8-42c9-a497-1c1a52d4da9a",
       "name": "Extract from File"
     },
     {
@@ -50,10 +48,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1240,
-        1035
+        -1020,
+        780
       ],
-      "id": "0ef4e800-e335-4faa-83e7-ab9c31a6905a",
+      "id": "8ababa32-bd51-461c-8c68-faddcbd94f69",
       "name": "Loop Over Items"
     },
     {
@@ -63,10 +61,10 @@
       "type": "n8n-nodes-base.executeCommand",
       "typeVersion": 1,
       "position": [
-        -2120,
-        1035
+        -1900,
+        780
       ],
-      "id": "e1bbb0e7-8446-45cb-8048-23b65e16e4c8",
+      "id": "44c52520-24c9-48f5-81a6-f994af22bfa5",
       "name": "Execute Command"
     },
     {
@@ -92,10 +90,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -2340,
-        1035
+        -2120,
+        780
       ],
-      "id": "e7cdeab7-a595-4e50-bbab-661dfed60756",
+      "id": "6705f402-4987-475a-9a93-45ad3e15a007",
       "name": "Edit Fields1"
     },
     {
@@ -105,10 +103,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1900,
-        1035
+        -1680,
+        780
       ],
-      "id": "e58c2fb2-453a-41fd-ac6e-4b09147e4525",
+      "id": "7d1cce95-2334-411a-a5d1-92e23dc69310",
       "name": "Extract All informations"
     },
     {
@@ -152,10 +150,10 @@
       "type": "n8n-nodes-base.set",
       "typeVersion": 3.4,
       "position": [
-        -1460,
-        1035
+        -1240,
+        780
       ],
-      "id": "960dba03-0ba2-4514-a12e-f656dda67eca",
+      "id": "34e0c5b7-bf62-45d4-a085-69af90d6594c",
       "name": "Edit Fields"
     },
     {
@@ -166,10 +164,10 @@
       "type": "n8n-nodes-neo4j.neo4j",
       "typeVersion": 1,
       "position": [
-        -800,
-        1035
+        -580,
+        780
       ],
-      "id": "6388eaed-83c8-479c-a57d-6f76af4ac4df",
+      "id": "0bace5b1-580e-4f20-befd-e15ec510bab6",
       "name": "Create Database",
       "credentials": {
         "neo4jApi": {
@@ -185,10 +183,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -510,
-        1110
+        -300,
+        860
       ],
-      "id": "7493b05f-6565-4c18-b313-cddc3ee753a2",
+      "id": "144b1093-0d25-4eee-9aac-9ee639e192e4",
       "name": "Return Items Seperated"
     },
     {
@@ -199,10 +197,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -800,
-        635
+        -580,
+        380
       ],
-      "id": "8a4b5a6a-c398-4806-97e4-d88077bdfb70",
+      "id": "9c0d9687-d8de-4733-9773-784528a9b98a",
       "name": "Loop Over Items2"
     },
     {
@@ -216,10 +214,10 @@
       "type": "@n8n/n8n-nodes-langchain.agent",
       "typeVersion": 2,
       "position": [
-        -580,
-        640
+        -360,
+        380
       ],
-      "id": "3c7654fb-a255-4e62-bb87-061a3adeb2d7",
+      "id": "1d08ba22-b8b0-40e6-a96d-170fd50ad041",
       "name": "AI Agent"
     },
     {
@@ -237,10 +235,10 @@
       "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
       "typeVersion": 1.2,
       "position": [
-        -600,
-        840
+        -380,
+        580
       ],
-      "id": "dc1eba0f-2ef1-4ba7-8791-66418d0e6a10",
+      "id": "066400d3-a898-4108-967e-b75551692fe4",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -251,16 +249,16 @@
     },
     {
       "parameters": {
-        "batchSize": 5000,
+        "batchSize": 100,
         "options": {}
       },
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -510,
-        335
+        -300,
+        80
       ],
-      "id": "fb1fd989-926c-43fc-abf4-04f35ba23c17",
+      "id": "267fda41-0c87-407f-afb7-05f1548cbcb8",
       "name": "Loop Over Items3"
     },
     {
@@ -270,10 +268,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1020,
-        1035
+        -800,
+        780
       ],
-      "id": "9b0a228b-e4c9-4003-8f93-43af537dd3d7",
+      "id": "442d4178-f35a-4743-b132-659619d4f208",
       "name": "Create Batch+Cypher Query"
     },
     {
@@ -283,10 +281,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -220,
-        260
+        0,
+        100
       ],
-      "id": "78c85cff-1c57-4e2a-9030-19e8d1f4e9dc",
+      "id": "b12b4055-1c72-4053-a628-201f56d5500a",
       "name": "Create Cypher Query"
     },
     {
@@ -296,10 +294,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -220,
-        640
+        0,
+        400
       ],
-      "id": "1f7b5b0e-cd4b-421d-b4cd-8d9d900294c3",
+      "id": "a043ac3b-47c4-4e15-a59a-d28aa52d3ce7",
       "name": "Extract + Clean Justification"
     },
     {
@@ -309,10 +307,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -1680,
-        1035
+        -1460,
+        780
       ],
-      "id": "d8864ec2-347a-4430-9ca7-84e19e89cbc7",
+      "id": "1d6d89fa-5598-4f4d-a5fc-ea2b329f0ae4",
       "name": "Bad Format Cleanup"
     },
     {
@@ -323,10 +321,10 @@
       "type": "n8n-nodes-base.splitInBatches",
       "typeVersion": 3,
       "position": [
-        -1020,
-        785
+        -800,
+        540
       ],
-      "id": "994a1bb8-d280-4e57-8d52-33c32e4898b4",
+      "id": "0b227288-1665-459a-9985-403f11c73dcb",
       "name": "Loop Over Items1"
     },
     {
@@ -336,10 +334,10 @@
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
       "position": [
-        -800,
-        840
+        -580,
+        580
       ],
-      "id": "a40faa12-218f-4aef-bd0c-76a47a91ad5f",
+      "id": "66a71ff3-6d88-4460-96b4-826193c32006",
       "name": "Creating Relationships"
     },
     {
@@ -350,10 +348,10 @@
       "type": "n8n-nodes-neo4j.neo4j",
       "typeVersion": 1,
       "position": [
-        0,
-        340
+        340,
+        80
       ],
-      "id": "f1e74242-ff47-409d-90ac-dce3e7a9dc3c",
+      "id": "179a7ca1-0013-4b08-8eda-49c5efdea577",
       "name": "Create Relationships NEO4J",
       "credentials": {
         "neo4jApi": {
@@ -623,10 +621,10 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "4ac79af0-9788-4875-b057-182138f408b5",
+  "versionId": "62165b93-4ae2-49a6-9b99-fbd64d64135a",
   "meta": {
     "instanceId": "558d88703fb65b2d0e44613bc35916258b0f0bf983c5d4730c00c424b77ca36a"
   },
-  "id": "1ms7aywFsDefNc5S",
+  "id": "RSu9RFex46iyrqUT",
   "tags": []
 }
